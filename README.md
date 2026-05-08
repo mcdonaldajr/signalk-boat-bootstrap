@@ -1,0 +1,142 @@
+# Signal K Boat Bootstrap
+
+Scripts and notes for turning a freshly installed Raspberry Pi OS image into the Signal K/AIS Plus boat setup.
+
+This repository intentionally does **not** install charts. Chart files are large and boat-specific, so copy or install those separately after the base system is working.
+
+## What This Installs
+
+The bootstrap script installs Raspberry Pi OS packages used by the AIS Plus suite, Piper speech support, and the Signal K plugins we use:
+
+- `signalk-ais-plus`
+- `signalk-ais-plus-audio`
+- `signalk-ais-plus-companion`
+- `signalk-capture-plus`
+- `signalk-harbour-editor`
+- `signalk-vessel-simulator`
+- `signalk-self-track-simulator`
+- `signalk-pi-controller`
+
+The script installs fixed, known-good tags by default. You can override any version with environment variables before running the script.
+
+## Start With Signal K
+
+Run the official Signal K installation first. Signal K currently documents Raspberry Pi installation as:
+
+1. Install Node.js and npm.
+2. Install Signal K Server with npm.
+3. Run the Signal K setup script:
+
+   ```bash
+   sudo signalk-server-setup
+   ```
+
+Follow the official Signal K documentation for the current install steps:
+
+- [Signal K Raspberry Pi installation](https://demo.signalk.org/documentation/installation/raspberry_pi_installation.html)
+- [Signal K installation overview](https://signalk.org/installation)
+
+Only run the AIS Plus bootstrap after `signalk-server-setup` has created `~/.signalk`.
+
+## GitHub Token
+
+If all plugin repositories are public, no token is needed. If any plugin repository is private, create a GitHub token with read-only access to the repositories.
+
+Recommended token setup:
+
+1. Open GitHub in a browser.
+2. Go to `Settings > Developer settings > Personal access tokens`.
+3. Choose **Fine-grained tokens**.
+4. Click **Generate new token**.
+5. Set a short expiry, for example 7 or 30 days.
+6. Under repository access, choose only the AIS Plus plugin repositories.
+7. Under permissions, grant **Contents: Read-only**.
+8. Generate the token and copy it immediately.
+
+On the Pi, paste it into an environment variable for this one install session:
+
+```bash
+read -rsp "GitHub token: " GITHUB_TOKEN
+echo
+export GITHUB_TOKEN
+```
+
+The installer writes the token to a temporary `.netrc` file so `npm` and `git` can read private GitHub repositories. It removes the temporary file when the install finishes.
+
+## Run From GitHub
+
+Once this repository is public, the normal install command will be:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/mcdonaldajr/signalk-boat-bootstrap/main/scripts/install-ais-suite.sh -o install-ais-suite.sh
+chmod +x install-ais-suite.sh
+./install-ais-suite.sh
+```
+
+With a GitHub token:
+
+```bash
+read -rsp "GitHub token: " GITHUB_TOKEN
+echo
+export GITHUB_TOKEN
+curl -fsSL https://raw.githubusercontent.com/mcdonaldajr/signalk-boat-bootstrap/main/scripts/install-ais-suite.sh -o install-ais-suite.sh
+chmod +x install-ais-suite.sh
+./install-ais-suite.sh
+unset GITHUB_TOKEN
+```
+
+## Run From a Local Clone
+
+```bash
+git clone https://github.com/mcdonaldajr/signalk-boat-bootstrap.git
+cd signalk-boat-bootstrap
+./scripts/install-ais-suite.sh
+```
+
+## Options
+
+```bash
+./scripts/install-ais-suite.sh --help
+```
+
+Useful options:
+
+- `--no-system-packages`: skip `apt` package installation.
+- `--no-piper`: skip Piper binary and voice installation.
+- `--no-restart`: do not restart Signal K at the end.
+
+Useful environment overrides:
+
+```bash
+AIS_PLUS_VERSION=v6.1.10 ./scripts/install-ais-suite.sh
+REPO_OWNER=mcdonaldajr ./scripts/install-ais-suite.sh
+SIGNALK_HOME=/home/pi/.signalk ./scripts/install-ais-suite.sh
+```
+
+## After Install
+
+1. Open the Signal K Admin UI.
+2. Log in as admin.
+3. Enable and configure the installed plugins if Signal K has not enabled them automatically.
+4. Open AIS Plus:
+
+   ```text
+   https://<your-pi-hostname>:3443/signalk-ais-plus/
+   ```
+
+5. Open AIS Plus Companion:
+
+   ```text
+   https://<your-pi-hostname>:3443/signalk-ais-plus-companion/
+   ```
+
+6. Add charts separately.
+
+## Notes
+
+- The script should be run as the normal Pi user, not with `sudo`.
+- The script uses `sudo` internally for operating-system packages, `/opt/piper`, and restarting Signal K.
+- Piper is installed automatically on 64-bit Raspberry Pi OS. Other architectures are skipped with a warning.
+- The default Piper voice is `en_GB-alan-medium`, installed into `~/piper-voices`.
+- CapturePlus log directories are created at `~/CapturePlusLogs/logs` and `~/CapturePlusLogs/clips`.
+
