@@ -13,6 +13,7 @@ The bootstrap script installs Raspberry Pi OS packages used by the AIS Plus suit
 - `signalk-ais-plus-companion`
 - `signalk-ais-plus-apple-watch`
 - `signalk-capture-plus`
+- `signalk-vessel-database`
 - `signalk-harbour-editor`
 - `signalk-vessel-simulator`
 - `signalk-self-track-simulator`
