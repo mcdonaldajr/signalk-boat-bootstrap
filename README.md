@@ -11,6 +11,7 @@ The bootstrap script installs Raspberry Pi OS packages used by the AIS Plus suit
 - `signalk-ais-plus`
 - `signalk-ais-plus-audio`
 - `signalk-ais-plus-companion`
+- `signalk-ais-plus-apple-watch`
 - `signalk-capture-plus`
 - `signalk-harbour-editor`
 - `signalk-vessel-simulator`
@@ -139,4 +140,3 @@ SIGNALK_HOME=/home/pi/.signalk ./scripts/install-ais-suite.sh
 - Piper is installed automatically on 64-bit Raspberry Pi OS. Other architectures are skipped with a warning.
 - The default Piper voice is `en_GB-alan-medium`, installed into `~/piper-voices`.
 - CapturePlus log directories are created at `~/CapturePlusLogs/logs` and `~/CapturePlusLogs/clips`.
-
