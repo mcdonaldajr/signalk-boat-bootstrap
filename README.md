@@ -119,6 +119,18 @@ REPO_OWNER=mcdonaldajr ./scripts/install-ais-suite.sh
 SIGNALK_HOME=/home/pi/.signalk ./scripts/install-ais-suite.sh
 ```
 
+## Updating To Latest GitHub Tags
+
+To update an existing Pi to the latest released tags from GitHub:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/mcdonaldajr/signalk-boat-bootstrap/main/scripts/update-ais-suite-latest.sh -o update-ais-suite-latest.sh
+chmod +x update-ais-suite-latest.sh
+./update-ais-suite-latest.sh
+```
+
+Use `./update-ais-suite-latest.sh --main` only when you deliberately want the newest main-branch code rather than the latest release tags.
+
 ## After Install
 
 1. Open the Signal K Admin UI.
