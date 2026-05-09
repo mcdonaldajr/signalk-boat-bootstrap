@@ -21,6 +21,10 @@ The bootstrap script installs Raspberry Pi OS packages used by the AIS Plus suit
 
 The script installs fixed, known-good tags by default. You can override any version with environment variables before running the script.
 
+## Suite Release Tags
+
+The default tags in this repository are kept as a coordinated AIS Plus suite. The v7/v1/v2/v3 generation below is intended to operate together and includes hull-aware CPA with fail-safe unknown-antenna handling, AIS Plus Audio announcements, Companion/Apple Watch displays, CapturePlus replay support, vessel metadata, harbour editing, simulators, and Pi control.
+
 ## Start With Signal K
 
 Run the official Signal K installation first. Signal K currently documents Raspberry Pi installation as:
@@ -110,7 +114,7 @@ Useful options:
 Useful environment overrides:
 
 ```bash
-AIS_PLUS_VERSION=v6.1.10 ./scripts/install-ais-suite.sh
+AIS_PLUS_VERSION=v7.0.0 ./scripts/install-ais-suite.sh
 REPO_OWNER=mcdonaldajr ./scripts/install-ais-suite.sh
 SIGNALK_HOME=/home/pi/.signalk ./scripts/install-ais-suite.sh
 ```
