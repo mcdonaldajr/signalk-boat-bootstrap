@@ -124,10 +124,16 @@ SIGNALK_HOME=/home/pi/.signalk ./scripts/install-ais-suite.sh
 To update an existing Pi to the latest released tags from GitHub:
 
 ```bash
+read -rsp "GitHub token: " GITHUB_TOKEN
+echo
+export GITHUB_TOKEN
 curl -fsSL https://raw.githubusercontent.com/mcdonaldajr/signalk-boat-bootstrap/main/scripts/update-ais-suite-latest.sh -o update-ais-suite-latest.sh
 chmod +x update-ais-suite-latest.sh
 ./update-ais-suite-latest.sh
+unset GITHUB_TOKEN
 ```
+
+The updater writes `GITHUB_TOKEN` to a temporary `.netrc` file so `git` and `npm` can authenticate to private GitHub repositories. It restores any existing `.netrc` when the update finishes.
 
 Use `./update-ais-suite-latest.sh --main` only when you deliberately want the newest main-branch code rather than the latest release tags.
 

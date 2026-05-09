@@ -6,6 +6,8 @@ REPO_OWNER="${REPO_OWNER:-mcdonaldajr}"
 SIGNALK_HOME="${SIGNALK_HOME:-$HOME/.signalk}"
 RESTART_SIGNALK="${RESTART_SIGNALK:-1}"
 INSTALL_REF_MODE="${INSTALL_REF_MODE:-tag}"
+NETRC_CREATED=0
+NETRC_BACKUP=""
 
 PLUGINS=(
   signalk-ais-plus
@@ -52,6 +54,17 @@ die() {
   exit 1
 }
 
+cleanup() {
+  if [[ "$NETRC_CREATED" == "1" ]]; then
+    rm -f "$HOME/.netrc"
+    if [[ -n "$NETRC_BACKUP" && -f "$NETRC_BACKUP" ]]; then
+      mv "$NETRC_BACKUP" "$HOME/.netrc"
+      chmod 600 "$HOME/.netrc"
+    fi
+  fi
+}
+trap cleanup EXIT
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --main)
@@ -78,19 +91,29 @@ if [[ ! -d "$SIGNALK_HOME" ]]; then
   die "$SIGNALK_HOME does not exist. Run signalk-server-setup first, or set SIGNALK_HOME."
 fi
 
-if [[ -n "${GITHUB_TOKEN:-}" ]]; then
-  export GIT_ASKPASS="$(mktemp)"
-  cat > "$GIT_ASKPASS" <<'EOF'
-#!/usr/bin/env bash
-case "$1" in
-  *Username*) printf '%s\n' x-access-token ;;
-  *Password*) printf '%s\n' "$GITHUB_TOKEN" ;;
-  *) printf '\n' ;;
-esac
+setup_github_auth() {
+  if [[ -z "${GITHUB_TOKEN:-}" ]]; then
+    warn "GITHUB_TOKEN is not set. Public repos will install, but private repos may fail."
+    return
+  fi
+
+  log "Preparing temporary GitHub token authentication"
+  if [[ -f "$HOME/.netrc" ]]; then
+    NETRC_BACKUP="$(mktemp "$HOME/.netrc.backup.XXXXXX")"
+    cp "$HOME/.netrc" "$NETRC_BACKUP"
+  fi
+
+  cat > "$HOME/.netrc" <<EOF
+machine github.com
+  login x-access-token
+  password ${GITHUB_TOKEN}
+machine api.github.com
+  login x-access-token
+  password ${GITHUB_TOKEN}
 EOF
-  chmod 700 "$GIT_ASKPASS"
-  trap 'rm -f "$GIT_ASKPASS"' EXIT
-fi
+  chmod 600 "$HOME/.netrc"
+  NETRC_CREATED=1
+}
 
 latest_tag_for_repo() {
   local repo="$1"
@@ -117,6 +140,7 @@ install_plugin() {
 }
 
 log "Updating AIS Plus suite in $SIGNALK_HOME"
+setup_github_auth
 cd "$SIGNALK_HOME"
 
 for plugin in "${PLUGINS[@]}"; do
