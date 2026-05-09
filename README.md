@@ -50,14 +50,12 @@ If all plugin repositories are public, no token is needed. If any plugin reposit
 
 Recommended token setup:
 
-1. Open GitHub in a browser.
-2. Go to `Settings > Developer settings > Personal access tokens`.
-3. Choose **Fine-grained tokens**.
-4. Click **Generate new token**.
-5. Set a short expiry, for example 7 or 30 days.
-6. Under repository access, choose only the AIS Plus plugin repositories.
-7. Under permissions, grant **Contents: Read-only**.
-8. Generate the token and copy it immediately.
+1. Open [GitHub's new fine-grained token page](https://github.com/settings/personal-access-tokens/new).
+2. Set **Token name** to `Pi AIS Plus updater`.
+3. Set **Expiration** to a short expiry, for example 30 or 90 days.
+4. Under **Repository access**, choose the AIS Plus plugin repositories, or choose all repositories if that is easier.
+5. Under **Permissions > Repository permissions > Contents**, choose **Read-only**.
+6. Generate the token and copy it immediately.
 
 On the Pi, paste it into an environment variable for this one install session:
 
@@ -134,6 +132,8 @@ unset GITHUB_TOKEN
 ```
 
 The updater writes `GITHUB_TOKEN` to a temporary `.netrc` file so `git` and `npm` can authenticate to private GitHub repositories. It restores any existing `.netrc` when the update finishes.
+
+If you need to create the token first, open [GitHub's new fine-grained token page](https://github.com/settings/personal-access-tokens/new), name it `Pi AIS Plus updater`, set an expiry such as 30 or 90 days, grant repository **Contents: Read-only**, generate it, and paste it into the Pi prompt.
 
 Use `./update-ais-suite-latest.sh --main` only when you deliberately want the newest main-branch code rather than the latest release tags.
 
