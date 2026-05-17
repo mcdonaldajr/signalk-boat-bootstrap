@@ -1,0 +1,74 @@
+flowchart LR
+  aisFeed["AIS / GPS / Signal K vessel deltas"]
+  signalK[("Signal K Server\nData API, resources, plugin routes")]
+
+  subgraph Core["Core Safety Layer"]
+    aisPlus["AIS Plus\nalert brain + chart app"]
+    uiState["Server-authored UI projections\n/uiState, /panelEvents,\n/browserSpeechEvents"]
+  end
+
+  subgraph Data["Shared Data Helpers"]
+    vesselDb["Vessel Database\nlearns static MMSI details"]
+    harbourResources["Signal K regions resources\nHarbour:* limits"]
+    harbourRepo[("signalk-harbours git repo")]
+  end
+
+  subgraph Clients["User Interfaces"]
+    aisBrowser["AIS Plus browser\nchart, targets, profiles,\nsettings, optional browser speech"]
+    companion["AIS Plus Companion\nphone controls, alerts,\nsilence, profile, audio"]
+    watch["Apple Watch / small clients\nstatus + quick actions"]
+  end
+
+  subgraph Audio["Audio Output"]
+    audioPlugin["AIS Plus Audio\nPiper + directional ping renderer"]
+    piSpeaker["Pi local speaker"]
+    mp3Stream["LAN MP3 live stream\nradio player / phone"]
+    generatedAudio["Rendered announcement files"]
+  end
+
+  subgraph Editing["Harbour Editing"]
+    harbourEditor["Harbour Editor\nmap-first harbour editor"]
+  end
+
+  subgraph TestOps["Testing / Operations"]
+    vesselSim["Vessel Simulator\nsynthetic AIS targets"]
+    selfSim["Self Track Simulator\nsynthetic own-vessel track"]
+    capturePlus["CapturePlus\ncapture, replay, clips"]
+    piController["Pi Controller\nstatus / control sidecar"]
+  end
+
+  aisFeed --> signalK
+  vesselSim --> signalK
+  selfSim --> signalK
+  capturePlus <--> signalK
+  capturePlus -->|"publishes plugins.capturePlus.playback"| aisPlus
+
+  signalK -->|"AIS targets, own vessel,\nGPS, chart resources"| aisPlus
+  aisPlus -->|"alerts, notifications,\nsilence/profile state,\nUI projections"| signalK
+  aisPlus --> uiState
+
+  signalK -->|"static AIS fields seen in deltas"| vesselDb
+  vesselDb -->|"fills missing static data\nname, type, dimensions"| signalK
+  signalK -->|"enriched vessel contexts"| aisPlus
+
+  harbourEditor <-->|"create/edit/import/export\nHarbour:* regions"| signalK
+  harbourEditor <--> harbourRepo
+  signalK -->|"Harbour:* regions"| harbourResources
+  harbourResources -->|"auto Harbour/Coastal profile\nand harbour-limit display"| aisPlus
+
+  uiState --> aisBrowser
+  signalK -->|"chart resources + live vessel data"| aisBrowser
+  aisBrowser -->|"profile/settings/silence actions"| aisPlus
+
+  signalK -->|"AIS Plus state via Data API"| companion
+  companion -->|"silence/profile/sensitivity actions"| aisPlus
+
+  signalK -->|"AIS Plus state"| watch
+  watch -->|"quick actions"| aisPlus
+
+  aisPlus -->|"announcement events\nAIS Plus decides what is worth saying"| audioPlugin
+  audioPlugin -->|"status at vessels.self.plugins.aisPlusAudio"| signalK
+  audioPlugin --> generatedAudio
+  generatedAudio --> companion
+  audioPlugin --> piSpeaker
+  audioPlugin --> mp3Stream

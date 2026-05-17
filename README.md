@@ -25,6 +25,10 @@ The script installs fixed, known-good tags by default. You can override any vers
 
 The default tags in this repository are kept as a coordinated AIS Plus suite. The v7/v1/v2/v3 generation below is intended to operate together and includes hull-aware CPA with fail-safe unknown-antenna handling, AIS Plus Audio announcements, Companion/Apple Watch displays, CapturePlus replay support, vessel metadata, harbour editing, simulators, and Pi control.
 
+## Suite Diagrams
+
+High-resolution diagrams showing how the AIS Plus suite plugins interact are in [docs/diagrams](docs/diagrams/README.md). The folder includes PNG exports for Pages/documents and the Mermaid source files used to generate them.
+
 ## Start With Signal K
 
 Run the official Signal K installation first. Signal K currently documents Raspberry Pi installation as:

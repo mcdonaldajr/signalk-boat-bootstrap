@@ -1,0 +1,13 @@
+flowchart TB
+  decision["AIS Plus decides\npriority, CPA/TCPA, profile,\nsilence, repeat rules"]
+  display["Browsers display\nmap, table, panel,\nsettings, controls"]
+  audio["AIS Plus Audio renders\nspeech, ping, files, stream"]
+  data["Vessel Database enriches\nstatic non-live details"]
+  harbour["Harbour Editor maintains\nHarbour:* region resources"]
+  testing["Simulator + CapturePlus\nfeed or replay test traffic"]
+
+  testing --> decision
+  data --> decision
+  harbour --> decision
+  decision --> display
+  decision --> audio

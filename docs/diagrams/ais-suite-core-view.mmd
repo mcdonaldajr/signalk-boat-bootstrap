@@ -1,0 +1,31 @@
+flowchart LR
+  SignalK[("Signal K Server\nData API + plugin routes")]
+
+  AIS["AIS Plus\nalert brain + chart app"]
+  DB["Vessel Database\nlearns static MMSI details"]
+  Audio["AIS Plus Audio\nPiper + directional pings + stream"]
+  Companion["AIS Plus Companion\nphone alerts + controls"]
+  Harbour["Harbour Editor\nedits Harbour:* regions"]
+  Harbours[("signalk-harbours\ngit repo")]
+  Capture["CapturePlus\ncapture / replay"]
+  Sim["Vessel Simulator\nsynthetic AIS targets"]
+
+  Sim --> SignalK
+  Capture <--> SignalK
+
+  SignalK --> AIS
+  AIS --> SignalK
+
+  SignalK --> DB
+  DB -->|"fills missing static vessel data"| SignalK
+
+  Harbour <-->|"Harbour:* regions"| SignalK
+  Harbour <--> Harbours
+  SignalK -->|"harbour limits / auto profile"| AIS
+
+  AIS -->|"UI state, alerts, profile, silence"| Companion
+  Companion -->|"actions"| AIS
+
+  AIS -->|"announcement events"| Audio
+  Audio -->|"status"| SignalK
+  Audio -->|"Pi speaker / MP3 stream / rendered files"| Companion
