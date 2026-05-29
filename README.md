@@ -28,7 +28,7 @@ The default tags in this repository are kept as a coordinated AIS Plus suite. Th
 
 | Component | Default tag |
 | --- | --- |
-| AIS Plus | `v7.72.12` |
+| AIS Plus | `v7.72.13` |
 | AIS Plus Audio | `v1.2.0` |
 | AIS Plus Companion | `v2.0.7` |
 | AIS Plus Apple Watch | `v1.0.1` |
@@ -135,7 +135,7 @@ Useful options:
 Useful environment overrides:
 
 ```bash
-AIS_PLUS_VERSION=v7.72.12 ./scripts/install-ais-suite.sh
+AIS_PLUS_VERSION=v7.72.13 ./scripts/install-ais-suite.sh
 AI_SNAPSHOT_VERSION=v0.1.8 ./scripts/install-ais-suite.sh
 REPO_OWNER=mcdonaldajr ./scripts/install-ais-suite.sh
 SIGNALK_HOME=/home/pi/.signalk ./scripts/install-ais-suite.sh
