@@ -12,6 +12,7 @@ The bootstrap script installs Raspberry Pi OS packages used by the AIS Plus suit
 - `signalk-ais-plus-audio`
 - `signalk-ais-plus-companion`
 - `signalk-ais-plus-apple-watch`
+- `signalk-ai-snapshot`
 - `signalk-capture-plus`
 - `signalk-vessel-database`
 - `signalk-harbour-editor`
@@ -23,7 +24,25 @@ The script installs fixed, known-good tags by default. You can override any vers
 
 ## Suite Release Tags
 
-The default tags in this repository are kept as a coordinated AIS Plus suite. The v7/v1/v2/v3 generation below is intended to operate together and includes hull-aware CPA with fail-safe unknown-antenna handling, AIS Plus Audio announcements, Companion/Apple Watch displays, CapturePlus replay support, vessel metadata, harbour editing, simulators, and Pi control.
+The default tags in this repository are kept as a coordinated AIS Plus suite. The current defaults install:
+
+| Component | Default tag |
+| --- | --- |
+| AIS Plus | `v7.72.11` |
+| AIS Plus Audio | `v1.2.0` |
+| AIS Plus Companion | `v2.0.5` |
+| AIS Plus Apple Watch | `v1.0.1` |
+| AI Snapshot | `v0.1.8` |
+| CapturePlus | `v1.0.2` |
+| Vessel Database | `v1.0.0` |
+| Harbour Editor | `v3.0.1` |
+| Vessel Simulator | `v2.4.0` |
+| Self Track Simulator | `v1.0.0` |
+| Pi Controller | `v1.1.0` |
+
+This set is intended to operate together and includes hull-aware CPA with fail-safe unknown-antenna handling, COLREG prompt wording, AIS Plus Audio announcements, Companion active/historical alert panels, Apple Watch compact alert feed support, AI Snapshot compact debug output, CapturePlus replay support, vessel metadata, harbour editing, simulators, and Pi control.
+
+AIS Plus is the source of truth for vessel alert state. Companion shows current vessel risks in Active Alerts, moves cleared vessel alerts into Historical Alerts, and keeps recent spoken/system announcements separate. Apple Watch and other very small clients should read the compact AIS Plus feed rather than trying to recreate the full alert model.
 
 ## Suite Diagrams
 
@@ -116,7 +135,8 @@ Useful options:
 Useful environment overrides:
 
 ```bash
-AIS_PLUS_VERSION=v7.0.0 ./scripts/install-ais-suite.sh
+AIS_PLUS_VERSION=v7.72.11 ./scripts/install-ais-suite.sh
+AI_SNAPSHOT_VERSION=v0.1.8 ./scripts/install-ais-suite.sh
 REPO_OWNER=mcdonaldajr ./scripts/install-ais-suite.sh
 SIGNALK_HOME=/home/pi/.signalk ./scripts/install-ais-suite.sh
 ```
@@ -158,7 +178,13 @@ Use `./update-ais-suite-latest.sh --main` only when you deliberately want the ne
    https://<your-pi-hostname>:3443/signalk-ais-plus-companion/
    ```
 
-6. Add charts separately.
+6. Open AI Snapshot when you need compact state for debugging or ChatGPT:
+
+   ```text
+   https://<your-pi-hostname>:3443/signalk-ai-snapshot/
+   ```
+
+7. Add charts separately.
 
 ## Notes
 
@@ -167,3 +193,4 @@ Use `./update-ais-suite-latest.sh --main` only when you deliberately want the ne
 - Piper is installed automatically on 64-bit Raspberry Pi OS. Other architectures are skipped with a warning.
 - The default Piper voice is `en_GB-alan-medium`, installed into `~/piper-voices`.
 - CapturePlus log directories are created at `~/CapturePlusLogs/logs` and `~/CapturePlusLogs/clips`.
+- AI Snapshot omits the full AIS Plus harbour region list by default. Enable its harbour-list option only when debugging harbour geometry.

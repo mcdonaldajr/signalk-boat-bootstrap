@@ -4,6 +4,7 @@ flowchart TB
   audio["AIS Plus Audio renders\nspeech, ping, files, stream"]
   data["Vessel Database enriches\nstatic non-live details"]
   harbour["Harbour Editor maintains\nHarbour:* region resources"]
+  snapshot["AI Snapshot prepares\ncompact ChatGPT/debug JSON"]
   testing["Simulator + CapturePlus\nfeed or replay test traffic"]
 
   testing --> decision
@@ -11,3 +12,4 @@ flowchart TB
   harbour --> decision
   decision --> display
   decision --> audio
+  decision --> snapshot

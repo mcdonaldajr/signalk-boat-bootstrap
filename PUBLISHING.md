@@ -1,12 +1,18 @@
 # Publishing This Repository
 
-The intended public repository is:
+The public repository is:
 
 ```text
 https://github.com/mcdonaldajr/signalk-boat-bootstrap
 ```
 
-When GitHub CLI authentication is working, publish it with:
+For normal updates, commit locally and push:
+
+```bash
+git push origin main
+```
+
+If the repository ever needs to be recreated, GitHub CLI can publish it with:
 
 ```bash
 gh repo create mcdonaldajr/signalk-boat-bootstrap \
@@ -22,9 +28,8 @@ If `gh auth status` reports an invalid token, refresh authentication first:
 gh auth login -h github.com
 ```
 
-After publishing, the curl install URL in `README.md` will work:
+The curl install URL in `README.md` uses:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/mcdonaldajr/signalk-boat-bootstrap/main/scripts/install-ais-suite.sh -o install-ais-suite.sh
 ```
-

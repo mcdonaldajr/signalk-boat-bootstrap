@@ -4,7 +4,7 @@ flowchart LR
 
   subgraph Core["Core Safety Layer"]
     aisPlus["AIS Plus\nalert brain + chart app"]
-    uiState["Server-authored UI projections\n/uiState, /panelEvents,\n/browserSpeechEvents"]
+    uiState["Server-authored UI projections\n/uiState, /compactAlertFeed,\n/panelEvents, /browserSpeechEvents"]
   end
 
   subgraph Data["Shared Data Helpers"]
@@ -15,8 +15,8 @@ flowchart LR
 
   subgraph Clients["User Interfaces"]
     aisBrowser["AIS Plus browser\nchart, targets, profiles,\nsettings, optional browser speech"]
-    companion["AIS Plus Companion\nphone controls, alerts,\nsilence, profile, audio"]
-    watch["Apple Watch / small clients\nstatus + quick actions"]
+    companion["AIS Plus Companion\nactive alerts, historical alerts,\nannouncements, controls, audio"]
+    watch["Apple Watch / small clients\ncompact alert feed + quick actions"]
   end
 
   subgraph Audio["Audio Output"]
@@ -34,6 +34,7 @@ flowchart LR
     vesselSim["Vessel Simulator\nsynthetic AIS targets"]
     selfSim["Self Track Simulator\nsynthetic own-vessel track"]
     capturePlus["CapturePlus\ncapture, replay, clips"]
+    aiSnapshot["AI Snapshot\ncompact ChatGPT/debug JSON"]
     piController["Pi Controller\nstatus / control sidecar"]
   end
 
@@ -60,11 +61,13 @@ flowchart LR
   signalK -->|"chart resources + live vessel data"| aisBrowser
   aisBrowser -->|"profile/settings/silence actions"| aisPlus
 
-  signalK -->|"AIS Plus state via Data API"| companion
+  signalK -->|"AIS Plus alert state,\nCompanion history, audio/setup state"| companion
   companion -->|"silence/profile/sensitivity actions"| aisPlus
 
-  signalK -->|"AIS Plus state"| watch
+  signalK -->|"AIS Plus compact alert feed"| watch
   watch -->|"quick actions"| aisPlus
+
+  signalK -->|"selected Signal K state\nand plugin routes"| aiSnapshot
 
   aisPlus -->|"announcement events\nAIS Plus decides what is worth saying"| audioPlugin
   audioPlugin -->|"status at vessels.self.plugins.aisPlusAudio"| signalK

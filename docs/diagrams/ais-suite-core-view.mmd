@@ -4,7 +4,9 @@ flowchart LR
   AIS["AIS Plus\nalert brain + chart app"]
   DB["Vessel Database\nlearns static MMSI details"]
   Audio["AIS Plus Audio\nPiper + directional pings + stream"]
-  Companion["AIS Plus Companion\nphone alerts + controls"]
+  Companion["AIS Plus Companion\nactive/history/announcements + controls"]
+  Watch["Apple Watch\ncompact alert feed"]
+  Snapshot["AI Snapshot\ncompact support JSON"]
   Harbour["Harbour Editor\nedits Harbour:* regions"]
   Harbours[("signalk-harbours\ngit repo")]
   Capture["CapturePlus\ncapture / replay"]
@@ -25,6 +27,9 @@ flowchart LR
 
   AIS -->|"UI state, alerts, profile, silence"| Companion
   Companion -->|"actions"| AIS
+  AIS -->|"compact alert feed"| Watch
+  Watch -->|"quick actions"| AIS
+  SignalK -->|"selected state + plugin routes"| Snapshot
 
   AIS -->|"announcement events"| Audio
   Audio -->|"status"| SignalK

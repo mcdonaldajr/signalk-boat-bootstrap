@@ -14,6 +14,7 @@ PLUGINS=(
   signalk-ais-plus-audio
   signalk-ais-plus-companion
   signalk-ais-plus-apple-watch
+  signalk-ai-snapshot
   signalk-capture-plus
   signalk-vessel-database
   signalk-harbour-editor
