@@ -30,7 +30,7 @@ The default tags in this repository are kept as a coordinated AIS Plus suite. Th
 | --- | --- |
 | AIS Plus | `v7.72.11` |
 | AIS Plus Audio | `v1.2.0` |
-| AIS Plus Companion | `v2.0.6` |
+| AIS Plus Companion | `v2.0.7` |
 | AIS Plus Apple Watch | `v1.0.1` |
 | AI Snapshot | `v0.1.8` |
 | CapturePlus | `v1.0.2` |
