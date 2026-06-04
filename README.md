@@ -33,7 +33,7 @@ The default tags in this repository are kept as a coordinated AIS Plus suite. Th
 | AIS Plus Companion | `v2.0.7` |
 | AIS Plus Apple Watch | `v1.0.1` |
 | AI Snapshot | `v0.1.8` |
-| CapturePlus | `v1.0.10` |
+| CapturePlus | `v1.0.12` |
 | Vessel Database | `v1.0.0` |
 | Harbour Editor | `v3.0.1` |
 | Vessel Simulator | `v2.4.0` |
