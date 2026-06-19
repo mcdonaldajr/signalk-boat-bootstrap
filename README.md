@@ -9,8 +9,11 @@ This repository intentionally does **not** install charts. Chart files are large
 The bootstrap script installs Raspberry Pi OS packages used by the AIS Plus suite, Piper speech support, and the Signal K plugins we use:
 
 - `signalk-ais-plus`
+- `signalk-notifications-plus`
 - `signalk-ais-plus-audio`
 - `signalk-ais-plus-companion`
+- `signalk-audible-instruments`
+- `signalk-instruments-plus`
 - `signalk-ais-plus-apple-watch`
 - `signalk-ai-snapshot`
 - `signalk-capture-plus`
@@ -28,21 +31,51 @@ The default tags in this repository are kept as a coordinated AIS Plus suite. Th
 
 | Component | Default tag |
 | --- | --- |
-| AIS Plus | `v7.72.15` |
-| AIS Plus Audio | `v1.2.2` |
-| AIS Plus Companion | `v2.0.7` |
+| AIS Plus combined application | `v8.0.0` |
+| Notifications Plus | `v1.0.0` |
+| AIS Plus Audio | `v2.0.0` |
+| AIS Plus Companion | `v3.0.0` |
+| Audible Instruments | `v1.0.0` |
+| Instruments Plus | `v1.0.0` |
 | AIS Plus Apple Watch | `v1.0.1` |
 | AI Snapshot | `v0.1.8` |
 | CapturePlus | `v1.0.12` |
 | Vessel Database | `v1.0.0` |
 | Harbour Editor | `v3.0.1` |
 | Vessel Simulator | `v2.4.0` |
-| Self Track Simulator | `v1.0.0` |
+| Self Track Simulator | `v1.2.1` |
 | Pi Controller | `v1.1.0` |
 
-This set is intended to operate together and includes hull-aware CPA with fail-safe unknown-antenna handling, COLREG prompt wording, AIS Plus Audio announcements, Companion active/historical alert panels, Apple Watch compact alert feed support, AI Snapshot compact debug output, CapturePlus replay support, vessel metadata, harbour editing, simulators, and Pi control.
+This set is the coordinated working baseline established on June 19, 2026. The
+major-version releases preserve the currently proven behavior while giving the
+future architecture a clear starting line.
 
-AIS Plus is the source of truth for vessel alert state. Companion shows current vessel risks in Active Alerts, moves cleared vessel alerts into Historical Alerts, and keeps recent spoken/system announcements separate. Apple Watch and other very small clients should read the compact AIS Plus feed rather than trying to recreate the full alert model.
+AIS Plus remains the combined collision engine and rich chart application.
+Notifications Plus brokers live cross-provider notifications. Audible Instruments
+provides instrument and rate-of-change alerts. AIS Plus Audio renders speech,
+and Companion presents Active alerts plus Recent activity.
+
+## Architecture Transition
+
+The existing applications above remain the installable working suite.
+
+Two private repositories reserve the future split:
+
+- `signalk-ais-plus-engine` `v0.1.0`
+- `signalk-ais-plus-display` `v0.1.0`
+
+They are architecture scaffolds only and are deliberately excluded from the
+bootstrap installer and latest-tag updater. They must not replace
+`signalk-ais-plus` until they contain tested installable Signal K software and
+the bootstrap documentation explicitly changes.
+
+Suite architecture, Signal K integration rules, observability requirements, and
+migration options are maintained in the private
+[`ais-plus-architecture`](https://github.com/mcdonaldajr/ais-plus-architecture)
+repository.
+
+See [Architecture Baseline](docs/architecture-baseline.md) for the repository
+roles and release policy.
 
 ## Suite Diagrams
 
@@ -135,7 +168,7 @@ Useful options:
 Useful environment overrides:
 
 ```bash
-AIS_PLUS_VERSION=v7.72.15 ./scripts/install-ais-suite.sh
+AIS_PLUS_VERSION=v8.0.0 ./scripts/install-ais-suite.sh
 AI_SNAPSHOT_VERSION=v0.1.8 ./scripts/install-ais-suite.sh
 REPO_OWNER=mcdonaldajr ./scripts/install-ais-suite.sh
 SIGNALK_HOME=/home/pi/.signalk ./scripts/install-ais-suite.sh

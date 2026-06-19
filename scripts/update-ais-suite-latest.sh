@@ -10,7 +10,10 @@ NETRC_CREATED=0
 NETRC_BACKUP=""
 
 PLUGINS=(
+  signalk-notifications-plus
   signalk-ais-plus
+  signalk-audible-instruments
+  signalk-instruments-plus
   signalk-ais-plus-audio
   signalk-ais-plus-companion
   signalk-ais-plus-apple-watch
