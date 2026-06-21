@@ -12,7 +12,7 @@ The bootstrap installs the proven split Watchkeeper applications:
 | `signalk-ais-plus-display` | `v2.2.4` | Watchkeeper Display; chart, targets, and alert view |
 | `signalk-ais-plus-console` | `v0.3.7` | Watchkeeper Console; sailing workspace shell |
 | `signalk-notifications-plus` | `v1.0.3` | Watchkeeper Notifications; live cross-provider notification broker |
-| `signalk-ais-plus-audio` | `v2.3.2` | Watchkeeper Audio; speech rendering, queue, Pi speaker, and stream |
+| `signalk-ais-plus-audio` | `v2.3.3` | Watchkeeper Audio; speech rendering, queue, Pi speaker, and stream |
 | `signalk-ais-plus-companion` | `v3.3.2` | Watchkeeper Companion; phone-oriented alerts, activity, controls, and audio |
 | `signalk-audible-instruments` | `v1.0.2` | Watchkeeper Instrument Alerts; instrument threshold and rate-of-change provider |
 | `signalk-instruments-plus` | `v1.1.2` | Watchkeeper Instruments; display-only instrument application |

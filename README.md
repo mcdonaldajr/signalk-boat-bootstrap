@@ -45,7 +45,7 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 | Watchkeeper Display | `v2.2.4` |
 | Watchkeeper Console | `v0.3.7` |
 | Watchkeeper Notifications | `v1.0.3` |
-| Watchkeeper Audio | `v2.3.2` |
+| Watchkeeper Audio | `v2.3.3` |
 | Watchkeeper Companion | `v3.3.2` |
 | Watchkeeper Instrument Alerts | `v1.0.2` |
 | Watchkeeper Instruments | `v1.1.2` |
