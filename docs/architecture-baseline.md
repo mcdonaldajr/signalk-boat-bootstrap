@@ -1,22 +1,26 @@
-# AIS Plus Architecture Baseline
+# Watchkeeper Architecture Baseline
 
-Date: June 19, 2026
+Date: June 21, 2026
 
 ## Working installable suite
 
-The bootstrap continues to install the proven applications:
+The bootstrap installs the proven split Watchkeeper applications:
 
 | Repository | Baseline | Current role |
 | --- | --- | --- |
-| `signalk-ais-plus` | `v8.0.0` | Combined AIS decision engine and rich chart app |
-| `signalk-notifications-plus` | `v1.0.0` | Live cross-provider notification broker |
-| `signalk-ais-plus-audio` | `v2.0.0` | Speech rendering, queue, Pi speaker, and stream |
-| `signalk-ais-plus-companion` | `v3.0.0` | Phone-oriented alerts, activity, controls, and audio |
-| `signalk-audible-instruments` | `v1.0.0` | Instrument threshold and rate-of-change provider |
-| `signalk-instruments-plus` | `v1.0.0` | Display-only instrument application |
+| `signalk-ais-plus-engine` | `v0.8.3` | Watchkeeper Traffic; authoritative AIS decisions and notifications |
+| `signalk-ais-plus-display` | `v2.2.2` | Watchkeeper Display; chart, targets, and alert view |
+| `signalk-ais-plus-console` | `v0.3.6` | Watchkeeper Console; sailing workspace shell |
+| `signalk-notifications-plus` | `v1.0.3` | Watchkeeper Notifications; live cross-provider notification broker |
+| `signalk-ais-plus-audio` | `v2.3.2` | Watchkeeper Audio; speech rendering, queue, Pi speaker, and stream |
+| `signalk-ais-plus-companion` | `v3.3.2` | Watchkeeper Companion; phone-oriented alerts, activity, controls, and audio |
+| `signalk-audible-instruments` | `v1.0.2` | Watchkeeper Instrument Alerts; instrument threshold and rate-of-change provider |
+| `signalk-instruments-plus` | `v1.1.2` | Watchkeeper Instruments; display-only instrument application |
+| `signalk-capture-plus` | `v1.2.1` | Signal K Logger; raw capture, replay, and clip extraction |
+| `signalk-voyage-debugger` | `v0.1.9` | Watchkeeper Capture; voyage-level capture orchestration and bundles |
 
-These major releases are baseline markers rather than rewrites. They preserve
-the immediately preceding tested behavior.
+Package names and Signal K paths intentionally keep their old compatibility
+names until the planned fresh-card package rename.
 
 ## Pi support services
 
@@ -27,19 +31,8 @@ The bootstrap also installs two non-Signal-K Pi support services:
 | `log2ram` | `https://github.com/azlux/log2ram` | Mounts `/var/log` in RAM to reduce SD-card wear from system and Signal K access logs |
 | `powerDown` | `https://github.com/mcdonaldajr/powerDown` | Watches the UPS GPIO power-loss signal and shuts the Pi down safely after the configured grace period |
 
-Diagnostic voyage files, CapturePlus logs, and downloaded bundles remain on the
+Diagnostic voyage files, Signal K Logger logs, and downloaded bundles remain on the
 SD card deliberately; only low-value system logs are moved to RAM.
-
-## Future repositories
-
-| Repository | Baseline | Status |
-| --- | --- | --- |
-| `signalk-ais-plus-engine` | `v0.1.0` | Private architecture scaffold; non-installable |
-| `signalk-ais-plus-display` | `v0.1.0` | Private architecture scaffold; non-installable |
-
-The future repositories are intentionally absent from both bootstrap scripts.
-Adding them requires an explicit future decision, installable packages, tests,
-Signal K contracts, and a migration/rollback procedure.
 
 ## Architecture authority
 
@@ -52,8 +45,8 @@ Key principles:
 - align with standard Signal K architecture and remain useful to third-party
   applications;
 - providers decide domain meaning;
-- Notifications Plus owns generic live notification mechanics;
-- AIS Plus Audio owns the audible playback timeline;
+- Watchkeeper Notifications owns generic live notification mechanics;
+- Watchkeeper Audio owns the audible playback timeline;
 - clients render authoritative projections;
 - runtime alert/audio state does not survive Signal K restart;
 - use Signal K-native debug logging, raw data logging, normalized capture, and
@@ -61,8 +54,8 @@ Key principles:
 
 ## Release policy
 
-- The current combined suite remains the default until the new Engine and
-  Display are demonstrably better and operationally safe.
-- New architecture work proceeds additively behind versioned contracts.
-- Do not remove existing packages from bootstrap during experiments.
-- Every migration stage needs a documented rollback to this baseline.
+- The split Watchkeeper suite is the default for fresh-card installs.
+- The old combined `signalk-ais-plus` package remains an explicit rollback
+  option via `--with-legacy-ais-plus`.
+- New work proceeds additively behind versioned contracts.
+- Every package/internal rename needs a documented rollback to this baseline.

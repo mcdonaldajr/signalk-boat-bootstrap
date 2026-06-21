@@ -8,23 +8,27 @@ INSTALL_PIPER="${INSTALL_PIPER:-1}"
 INSTALL_SYSTEM_PACKAGES="${INSTALL_SYSTEM_PACKAGES:-1}"
 INSTALL_LOG2RAM="${INSTALL_LOG2RAM:-1}"
 INSTALL_POWERDOWN="${INSTALL_POWERDOWN:-1}"
+INSTALL_LEGACY_AIS_PLUS="${INSTALL_LEGACY_AIS_PLUS:-0}"
 RESTART_SIGNALK="${RESTART_SIGNALK:-1}"
 
 AIS_PLUS_VERSION="${AIS_PLUS_VERSION:-v8.0.0}"
-NOTIFICATIONS_PLUS_VERSION="${NOTIFICATIONS_PLUS_VERSION:-v1.0.0}"
-AIS_PLUS_AUDIO_VERSION="${AIS_PLUS_AUDIO_VERSION:-v2.0.0}"
-AIS_PLUS_COMPANION_VERSION="${AIS_PLUS_COMPANION_VERSION:-v3.0.0}"
-AUDIBLE_INSTRUMENTS_VERSION="${AUDIBLE_INSTRUMENTS_VERSION:-v1.0.0}"
-INSTRUMENTS_PLUS_VERSION="${INSTRUMENTS_PLUS_VERSION:-v1.0.0}"
+WATCHKEEPER_TRAFFIC_VERSION="${WATCHKEEPER_TRAFFIC_VERSION:-v0.8.3}"
+WATCHKEEPER_DISPLAY_VERSION="${WATCHKEEPER_DISPLAY_VERSION:-v2.2.2}"
+WATCHKEEPER_CONSOLE_VERSION="${WATCHKEEPER_CONSOLE_VERSION:-v0.3.6}"
+NOTIFICATIONS_PLUS_VERSION="${NOTIFICATIONS_PLUS_VERSION:-v1.0.3}"
+AIS_PLUS_AUDIO_VERSION="${AIS_PLUS_AUDIO_VERSION:-v2.3.2}"
+AIS_PLUS_COMPANION_VERSION="${AIS_PLUS_COMPANION_VERSION:-v3.3.2}"
+AUDIBLE_INSTRUMENTS_VERSION="${AUDIBLE_INSTRUMENTS_VERSION:-v1.0.2}"
+INSTRUMENTS_PLUS_VERSION="${INSTRUMENTS_PLUS_VERSION:-v1.1.2}"
 AIS_PLUS_APPLE_WATCH_VERSION="${AIS_PLUS_APPLE_WATCH_VERSION:-v1.0.1}"
 AI_SNAPSHOT_VERSION="${AI_SNAPSHOT_VERSION:-v0.2.1}"
-CAPTURE_PLUS_VERSION="${CAPTURE_PLUS_VERSION:-v1.2.0}"
-VOYAGE_CAPTURE_VERSION="${VOYAGE_CAPTURE_VERSION:-v0.1.8}"
+CAPTURE_PLUS_VERSION="${CAPTURE_PLUS_VERSION:-v1.2.1}"
+VOYAGE_CAPTURE_VERSION="${VOYAGE_CAPTURE_VERSION:-v0.1.9}"
 VESSEL_DATABASE_VERSION="${VESSEL_DATABASE_VERSION:-v1.0.0}"
 HARBOUR_EDITOR_VERSION="${HARBOUR_EDITOR_VERSION:-v3.0.1}"
 VESSEL_SIMULATOR_VERSION="${VESSEL_SIMULATOR_VERSION:-v2.4.0}"
-SELF_TRACK_SIMULATOR_VERSION="${SELF_TRACK_SIMULATOR_VERSION:-v1.2.1}"
-PI_CONTROLLER_VERSION="${PI_CONTROLLER_VERSION:-v1.1.0}"
+SELF_TRACK_SIMULATOR_VERSION="${SELF_TRACK_SIMULATOR_VERSION:-v1.2.2}"
+PI_CONTROLLER_VERSION="${PI_CONTROLLER_VERSION:-v1.2.0}"
 
 PIPER_VERSION="${PIPER_VERSION:-v1.2.0}"
 PIPER_DIR="${PIPER_DIR:-/opt/piper}"
@@ -43,7 +47,7 @@ usage() {
   cat <<EOF
 Usage: $SCRIPT_NAME [options]
 
-Installs the AIS Plus suite onto a Raspberry Pi that already has Signal K
+Installs the Watchkeeper suite onto a Raspberry Pi that already has Signal K
 Server installed and configured with signalk-server-setup.
 
 Options:
@@ -51,6 +55,7 @@ Options:
   --no-log2ram           Skip log2ram installation for /var/log SD-card wear reduction
   --no-powerdown         Skip powerDown UPS GPIO shutdown service installation
   --no-piper             Skip Piper and voice installation
+  --with-legacy-ais-plus Install the old combined AIS Plus app as a rollback aid
   --no-restart           Do not restart Signal K at the end
   --help                 Show this help
 
@@ -63,7 +68,10 @@ Environment overrides:
   POWERDOWN_REPO                     Default: $POWERDOWN_REPO
   POWERDOWN_REF                      Default: $POWERDOWN_REF
   POWERDOWN_INSTALL_DIR              Default: $POWERDOWN_INSTALL_DIR
-  AIS_PLUS_VERSION                   Default: $AIS_PLUS_VERSION
+  AIS_PLUS_VERSION                   Legacy combined app tag, default: $AIS_PLUS_VERSION
+  WATCHKEEPER_TRAFFIC_VERSION        Default: $WATCHKEEPER_TRAFFIC_VERSION
+  WATCHKEEPER_DISPLAY_VERSION        Default: $WATCHKEEPER_DISPLAY_VERSION
+  WATCHKEEPER_CONSOLE_VERSION        Default: $WATCHKEEPER_CONSOLE_VERSION
   NOTIFICATIONS_PLUS_VERSION         Default: $NOTIFICATIONS_PLUS_VERSION
   AIS_PLUS_AUDIO_VERSION             Default: $AIS_PLUS_AUDIO_VERSION
   AIS_PLUS_COMPANION_VERSION         Default: $AIS_PLUS_COMPANION_VERSION
@@ -118,6 +126,9 @@ while [[ $# -gt 0 ]]; do
       ;;
     --no-piper)
       INSTALL_PIPER=0
+      ;;
+    --with-legacy-ais-plus)
+      INSTALL_LEGACY_AIS_PLUS=1
       ;;
     --no-restart)
       RESTART_SIGNALK=0
@@ -254,7 +265,11 @@ install_plugin() {
   local url="git+https://github.com/${REPO_OWNER}/${repo}.git#${version}"
 
   log "Installing ${repo} ${version}"
-  npm install "$url" --omit=dev --no-package-lock
+  npm install "$url" --omit=dev --no-package-lock || {
+    warn "Install failed for ${repo}; verifying npm cache and retrying once."
+    npm cache verify || true
+    npm install "$url" --omit=dev --no-package-lock
+  }
 }
 
 setup_github_auth
@@ -266,7 +281,12 @@ log "Installing Signal K plugins into $SIGNALK_HOME"
 cd "$SIGNALK_HOME"
 
 install_plugin "signalk-notifications-plus" "$NOTIFICATIONS_PLUS_VERSION"
-install_plugin "signalk-ais-plus" "$AIS_PLUS_VERSION"
+install_plugin "signalk-ais-plus-engine" "$WATCHKEEPER_TRAFFIC_VERSION"
+install_plugin "signalk-ais-plus-display" "$WATCHKEEPER_DISPLAY_VERSION"
+install_plugin "signalk-ais-plus-console" "$WATCHKEEPER_CONSOLE_VERSION"
+if [[ "$INSTALL_LEGACY_AIS_PLUS" == "1" ]]; then
+  install_plugin "signalk-ais-plus" "$AIS_PLUS_VERSION"
+fi
 install_plugin "signalk-audible-instruments" "$AUDIBLE_INSTRUMENTS_VERSION"
 install_plugin "signalk-instruments-plus" "$INSTRUMENTS_PLUS_VERSION"
 install_plugin "signalk-ais-plus-audio" "$AIS_PLUS_AUDIO_VERSION"
@@ -299,8 +319,9 @@ Next steps:
 1. Open the Signal K Admin UI.
 2. Log in as admin.
 3. Enable/configure the installed plugins if they are not already enabled.
-4. Open AIS Plus at:
-   https://<your-pi-hostname>:3443/signalk-ais-plus/
+4. Enable Watchkeeper Traffic when you are ready for it to publish AIS collision notifications.
+5. Open Watchkeeper Console at:
+   https://<your-pi-hostname>:3443/signalk-ais-plus-console/
 
 If browser behaviour looks stale after an update, hard refresh or clear site
 data for the Signal K hostname.

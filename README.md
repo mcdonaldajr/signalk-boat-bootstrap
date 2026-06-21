@@ -1,12 +1,12 @@
-# Signal K Boat Bootstrap
+# Watchkeeper Boat Bootstrap
 
-Scripts and notes for turning a freshly installed Raspberry Pi OS image into the Signal K/AIS Plus boat setup.
+Scripts and notes for turning a freshly installed Raspberry Pi OS image into the Signal K/Watchkeeper boat setup.
 
 This repository intentionally does **not** install charts. Chart files are large and boat-specific, so copy or install those separately after the base system is working.
 
 ## What This Installs
 
-The bootstrap script installs Raspberry Pi OS packages used by the AIS Plus suite, Pi support services, Piper speech support, and the Signal K plugins we use.
+The bootstrap script installs Raspberry Pi OS packages used by the Watchkeeper suite, Pi support services, Piper speech support, and the Signal K plugins we use.
 
 Support services:
 
@@ -15,7 +15,9 @@ Support services:
 
 Signal K plugins:
 
-- `signalk-ais-plus`
+- `signalk-ais-plus-engine` (Watchkeeper Traffic)
+- `signalk-ais-plus-display` (Watchkeeper Display)
+- `signalk-ais-plus-console` (Watchkeeper Console)
 - `signalk-notifications-plus`
 - `signalk-ais-plus-audio`
 - `signalk-ais-plus-companion`
@@ -23,8 +25,8 @@ Signal K plugins:
 - `signalk-instruments-plus`
 - `signalk-ais-plus-apple-watch`
 - `signalk-ai-snapshot`
-- `signalk-capture-plus`
-- `signalk-voyage-debugger` (Voyage Capture)
+- `signalk-capture-plus` (Signal K Logger)
+- `signalk-voyage-debugger` (Watchkeeper Capture)
 - `signalk-vessel-database`
 - `signalk-harbour-editor`
 - `signalk-vessel-simulator`
@@ -35,48 +37,45 @@ The script installs fixed, known-good tags by default. You can override any vers
 
 ## Suite Release Tags
 
-The default tags in this repository are kept as a coordinated AIS Plus suite. The current defaults install:
+The default tags in this repository are kept as a coordinated Watchkeeper suite. The current defaults install:
 
 | Component | Default tag |
 | --- | --- |
-| AIS Plus combined application | `v8.0.0` |
-| Notifications Plus | `v1.0.0` |
-| AIS Plus Audio | `v2.0.0` |
-| AIS Plus Companion | `v3.0.0` |
-| Audible Instruments | `v1.0.0` |
-| Instruments Plus | `v1.0.0` |
+| Watchkeeper Traffic | `v0.8.3` |
+| Watchkeeper Display | `v2.2.2` |
+| Watchkeeper Console | `v0.3.6` |
+| Watchkeeper Notifications | `v1.0.3` |
+| Watchkeeper Audio | `v2.3.2` |
+| Watchkeeper Companion | `v3.3.2` |
+| Watchkeeper Instrument Alerts | `v1.0.2` |
+| Watchkeeper Instruments | `v1.1.2` |
 | AIS Plus Apple Watch | `v1.0.1` |
 | AI Snapshot | `v0.2.1` |
-| CapturePlus | `v1.2.0` |
-| Voyage Capture | `v0.1.8` |
+| Signal K Logger | `v1.2.1` |
+| Watchkeeper Capture | `v0.1.9` |
 | Vessel Database | `v1.0.0` |
 | Harbour Editor | `v3.0.1` |
 | Vessel Simulator | `v2.4.0` |
-| Self Track Simulator | `v1.2.1` |
-| Pi Controller | `v1.1.0` |
+| Self Track Simulator | `v1.2.2` |
+| Pi Controller | `v1.2.0` |
 
-This set is the coordinated working baseline established on June 19, 2026. The
-major-version releases preserve the currently proven behavior while giving the
-future architecture a clear starting line.
+This set is the coordinated working baseline for the split Watchkeeper
+architecture. The old combined AIS Plus app remains available as an explicit
+rollback install with `--with-legacy-ais-plus`, but it is no longer installed by
+default on fresh cards.
 
-AIS Plus remains the combined collision engine and rich chart application.
-Notifications Plus brokers live cross-provider notifications. Audible Instruments
-provides instrument and rate-of-change alerts. AIS Plus Audio renders speech,
-and Companion presents Active alerts plus Recent activity.
+Watchkeeper Traffic owns AIS decisions. Watchkeeper Notifications brokers live
+cross-provider notifications. Watchkeeper Audio renders speech. Watchkeeper
+Companion presents active alerts plus recent activity. Watchkeeper Display owns
+the chart view, and Watchkeeper Console provides the sailing workspace.
 
 ## Architecture Transition
 
-The existing applications above remain the installable working suite.
-
-Two private repositories reserve the future split:
-
-- `signalk-ais-plus-engine` `v0.1.0`
-- `signalk-ais-plus-display` `v0.1.0`
-
-They are architecture scaffolds only and are deliberately excluded from the
-bootstrap installer and latest-tag updater. They must not replace
-`signalk-ais-plus` until they contain tested installable Signal K software and
-the bootstrap documentation explicitly changes.
+The simulator migration to the split architecture is complete. Bootstrap now
+installs the split Watchkeeper components by default. During the naming
+migration, npm package names, plugin ids, and Signal K paths intentionally keep
+their existing `signalk-*` / `aisPlus*` compatibility names; the full package
+rename is planned for the fresh SD-card install window.
 
 Suite architecture, Signal K integration rules, observability requirements, and
 migration options are maintained in the private
@@ -88,7 +87,7 @@ roles and release policy.
 
 ## Suite Diagrams
 
-High-resolution diagrams showing how the AIS Plus suite plugins interact are in [docs/diagrams](docs/diagrams/README.md). The folder includes PNG exports for Pages/documents and the Mermaid source files used to generate them.
+High-resolution diagrams showing how the Watchkeeper suite plugins interact are in [docs/diagrams](docs/diagrams/README.md). The folder includes PNG exports for Pages/documents and the Mermaid source files used to generate them.
 
 ## Start With Signal K
 
@@ -107,7 +106,7 @@ Follow the official Signal K documentation for the current install steps:
 - [Signal K Raspberry Pi installation](https://demo.signalk.org/documentation/installation/raspberry_pi_installation.html)
 - [Signal K installation overview](https://signalk.org/installation)
 
-Only run the AIS Plus bootstrap after `signalk-server-setup` has created `~/.signalk`.
+Only run the Watchkeeper bootstrap after `signalk-server-setup` has created `~/.signalk`.
 
 ## GitHub Token
 
@@ -116,9 +115,9 @@ If all plugin repositories are public, no token is needed. If any plugin reposit
 Recommended token setup:
 
 1. Open [GitHub's new fine-grained token page](https://github.com/settings/personal-access-tokens/new).
-2. Set **Token name** to `Pi AIS Plus updater`.
+2. Set **Token name** to `Pi Watchkeeper updater`.
 3. Set **Expiration** to a short expiry, for example 30 or 90 days.
-4. Under **Repository access**, choose the AIS Plus plugin repositories, or choose all repositories if that is easier.
+4. Under **Repository access**, choose the Watchkeeper plugin repositories, or choose all repositories if that is easier.
 5. Under **Permissions > Repository permissions > Contents**, choose **Read-only**.
 6. Generate the token and copy it immediately.
 
@@ -180,6 +179,7 @@ Useful environment overrides:
 
 ```bash
 AIS_PLUS_VERSION=v8.0.0 ./scripts/install-ais-suite.sh
+WATCHKEEPER_TRAFFIC_VERSION=v0.8.3 ./scripts/install-ais-suite.sh
 AI_SNAPSHOT_VERSION=v0.2.1 ./scripts/install-ais-suite.sh
 REPO_OWNER=mcdonaldajr ./scripts/install-ais-suite.sh
 SIGNALK_HOME=/home/pi/.signalk ./scripts/install-ais-suite.sh
@@ -202,7 +202,7 @@ unset GITHUB_TOKEN
 
 The updater writes `GITHUB_TOKEN` to a temporary `.netrc` file so `git` and `npm` can authenticate to private GitHub repositories. It restores any existing `.netrc` when the update finishes.
 
-If you need to create the token first, open [GitHub's new fine-grained token page](https://github.com/settings/personal-access-tokens/new), name it `Pi AIS Plus updater`, set an expiry such as 30 or 90 days, grant repository **Contents: Read-only**, generate it, and paste it into the Pi prompt.
+If you need to create the token first, open [GitHub's new fine-grained token page](https://github.com/settings/personal-access-tokens/new), name it `Pi Watchkeeper updater`, set an expiry such as 30 or 90 days, grant repository **Contents: Read-only**, generate it, and paste it into the Pi prompt.
 
 Use `./update-ais-suite-latest.sh --main` only when you deliberately want the newest main-branch code rather than the latest release tags.
 
@@ -211,13 +211,13 @@ Use `./update-ais-suite-latest.sh --main` only when you deliberately want the ne
 1. Open the Signal K Admin UI.
 2. Log in as admin.
 3. Enable and configure the installed plugins if Signal K has not enabled them automatically.
-4. Open AIS Plus:
+4. Open Watchkeeper Console:
 
    ```text
-   https://<your-pi-hostname>:3443/signalk-ais-plus/
+   https://<your-pi-hostname>:3443/signalk-ais-plus-console/
    ```
 
-5. Open AIS Plus Companion:
+5. Open Watchkeeper Companion:
 
    ```text
    https://<your-pi-hostname>:3443/signalk-ais-plus-companion/
@@ -242,9 +242,9 @@ Use `./update-ais-suite-latest.sh --main` only when you deliberately want the ne
 
 - The script should be run as the normal Pi user, not with `sudo`.
 - The script uses `sudo` internally for operating-system packages, log2ram, powerDown, `/opt/piper`, and restarting Signal K.
-- log2ram keeps normal system logs in RAM and syncs them back according to its own defaults. CapturePlus and Voyage Capture files are intentionally kept on disk under `~/CapturePlusLogs`.
+- log2ram keeps normal system logs in RAM and syncs them back according to its own defaults. Signal K Logger and Watchkeeper Capture files are intentionally kept on disk under `~/CapturePlusLogs`.
 - powerDown defaults to BCM GPIO 24, matching the `mcdonaldajr/powerDown` repository. Use `--no-powerdown` if the UPS shutdown signal is not fitted.
 - Piper is installed automatically on 64-bit Raspberry Pi OS. Other architectures are skipped with a warning.
 - The default Piper voice is `en_GB-alan-medium`, installed into `~/piper-voices`.
-- CapturePlus directories are created at `~/CapturePlusLogs/buffer`, `~/CapturePlusLogs/captures`, `~/CapturePlusLogs/clips`, and `~/CapturePlusLogs/voyages`.
+- Signal K Logger directories are created at `~/CapturePlusLogs/buffer`, `~/CapturePlusLogs/captures`, `~/CapturePlusLogs/clips`, and `~/CapturePlusLogs/voyages`.
 - AI Snapshot omits the full AIS Plus harbour region list by default. Enable its harbour-list option only when debugging harbour geometry.

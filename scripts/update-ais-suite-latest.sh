@@ -11,7 +11,9 @@ NETRC_BACKUP=""
 
 PLUGINS=(
   signalk-notifications-plus
-  signalk-ais-plus
+  signalk-ais-plus-engine
+  signalk-ais-plus-display
+  signalk-ais-plus-console
   signalk-audible-instruments
   signalk-instruments-plus
   signalk-ais-plus-audio
@@ -30,7 +32,7 @@ usage() {
   cat <<EOF
 Usage: $SCRIPT_NAME [options]
 
-Updates the AIS Plus suite in ~/.signalk from GitHub.
+Updates the Watchkeeper suite in ~/.signalk from GitHub.
 By default it installs the newest v* semver tag for each plugin repository.
 
 Options:
@@ -140,10 +142,14 @@ install_plugin() {
 
   local url="git+https://github.com/${REPO_OWNER}/${repo}.git#${ref}"
   log "Installing ${repo} ${ref}"
-  npm install "$url" --omit=dev --no-package-lock
+  npm install "$url" --omit=dev --no-package-lock || {
+    warn "Install failed for ${repo}; verifying npm cache and retrying once."
+    npm cache verify || true
+    npm install "$url" --omit=dev --no-package-lock
+  }
 }
 
-log "Updating AIS Plus suite in $SIGNALK_HOME"
+log "Updating Watchkeeper suite in $SIGNALK_HOME"
 setup_github_auth
 cd "$SIGNALK_HOME"
 
@@ -160,4 +166,4 @@ if [[ "$RESTART_SIGNALK" == "1" ]]; then
   fi
 fi
 
-log "AIS Plus suite update complete"
+log "Watchkeeper suite update complete"
