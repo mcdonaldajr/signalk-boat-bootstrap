@@ -18,6 +18,18 @@ The bootstrap continues to install the proven applications:
 These major releases are baseline markers rather than rewrites. They preserve
 the immediately preceding tested behavior.
 
+## Pi support services
+
+The bootstrap also installs two non-Signal-K Pi support services:
+
+| Service | Source | Current role |
+| --- | --- | --- |
+| `log2ram` | `https://github.com/azlux/log2ram` | Mounts `/var/log` in RAM to reduce SD-card wear from system and Signal K access logs |
+| `powerDown` | `https://github.com/mcdonaldajr/powerDown` | Watches the UPS GPIO power-loss signal and shuts the Pi down safely after the configured grace period |
+
+Diagnostic voyage files, CapturePlus logs, and downloaded bundles remain on the
+SD card deliberately; only low-value system logs are moved to RAM.
+
 ## Future repositories
 
 | Repository | Baseline | Status |

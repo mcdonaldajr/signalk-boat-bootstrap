@@ -6,7 +6,14 @@ This repository intentionally does **not** install charts. Chart files are large
 
 ## What This Installs
 
-The bootstrap script installs Raspberry Pi OS packages used by the AIS Plus suite, Piper speech support, and the Signal K plugins we use:
+The bootstrap script installs Raspberry Pi OS packages used by the AIS Plus suite, Pi support services, Piper speech support, and the Signal K plugins we use.
+
+Support services:
+
+- [`log2ram`](https://github.com/azlux/log2ram): mounts `/var/log` in RAM to reduce SD-card wear from chatty system and Signal K access logs. Voyage data remains on disk.
+- [`powerDown`](https://github.com/mcdonaldajr/powerDown): UPS GPIO auto-shutdown service. By default it watches BCM GPIO 24 and shuts the Pi down if power is not restored within the configured grace period.
+
+Signal K plugins:
 
 - `signalk-ais-plus`
 - `signalk-notifications-plus`
@@ -162,6 +169,8 @@ cd signalk-boat-bootstrap
 Useful options:
 
 - `--no-system-packages`: skip `apt` package installation.
+- `--no-log2ram`: skip `/var/log` RAM logging support.
+- `--no-powerdown`: skip the UPS GPIO shutdown service.
 - `--no-piper`: skip Piper binary and voice installation.
 - `--no-restart`: do not restart Signal K at the end.
 
@@ -172,6 +181,7 @@ AIS_PLUS_VERSION=v8.0.0 ./scripts/install-ais-suite.sh
 AI_SNAPSHOT_VERSION=v0.1.8 ./scripts/install-ais-suite.sh
 REPO_OWNER=mcdonaldajr ./scripts/install-ais-suite.sh
 SIGNALK_HOME=/home/pi/.signalk ./scripts/install-ais-suite.sh
+POWERDOWN_INSTALL_DIR=/opt/powerDown ./scripts/install-ais-suite.sh
 ```
 
 ## Updating To Latest GitHub Tags
@@ -218,12 +228,21 @@ Use `./update-ais-suite-latest.sh --main` only when you deliberately want the ne
    ```
 
 7. Add charts separately.
+8. Verify the Pi support services:
+
+   ```bash
+   systemctl status log2ram --no-pager
+   df -h /var/log
+   sudo systemctl status powerDown.service --no-pager
+   ```
 
 ## Notes
 
 - The script should be run as the normal Pi user, not with `sudo`.
-- The script uses `sudo` internally for operating-system packages, `/opt/piper`, and restarting Signal K.
+- The script uses `sudo` internally for operating-system packages, log2ram, powerDown, `/opt/piper`, and restarting Signal K.
+- log2ram keeps normal system logs in RAM and syncs them back according to its own defaults. CapturePlus and Voyage Debugger files are intentionally kept on disk under `~/CapturePlusLogs`.
+- powerDown defaults to BCM GPIO 24, matching the `mcdonaldajr/powerDown` repository. Use `--no-powerdown` if the UPS shutdown signal is not fitted.
 - Piper is installed automatically on 64-bit Raspberry Pi OS. Other architectures are skipped with a warning.
 - The default Piper voice is `en_GB-alan-medium`, installed into `~/piper-voices`.
-- CapturePlus log directories are created at `~/CapturePlusLogs/logs` and `~/CapturePlusLogs/clips`.
+- CapturePlus directories are created at `~/CapturePlusLogs/buffer`, `~/CapturePlusLogs/captures`, `~/CapturePlusLogs/clips`, and `~/CapturePlusLogs/voyages`.
 - AI Snapshot omits the full AIS Plus harbour region list by default. Enable its harbour-list option only when debugging harbour geometry.

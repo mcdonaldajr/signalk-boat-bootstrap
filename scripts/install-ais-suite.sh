@@ -6,6 +6,8 @@ REPO_OWNER="${REPO_OWNER:-mcdonaldajr}"
 SIGNALK_HOME="${SIGNALK_HOME:-$HOME/.signalk}"
 INSTALL_PIPER="${INSTALL_PIPER:-1}"
 INSTALL_SYSTEM_PACKAGES="${INSTALL_SYSTEM_PACKAGES:-1}"
+INSTALL_LOG2RAM="${INSTALL_LOG2RAM:-1}"
+INSTALL_POWERDOWN="${INSTALL_POWERDOWN:-1}"
 RESTART_SIGNALK="${RESTART_SIGNALK:-1}"
 
 AIS_PLUS_VERSION="${AIS_PLUS_VERSION:-v8.0.0}"
@@ -27,6 +29,11 @@ PIPER_VERSION="${PIPER_VERSION:-v1.2.0}"
 PIPER_DIR="${PIPER_DIR:-/opt/piper}"
 PIPER_VOICES_DIR="${PIPER_VOICES_DIR:-$HOME/piper-voices}"
 PIPER_VOICE="${PIPER_VOICE:-en_GB-alan-medium}"
+LOG2RAM_REPO="${LOG2RAM_REPO:-https://github.com/azlux/log2ram.git}"
+LOG2RAM_REF="${LOG2RAM_REF:-master}"
+POWERDOWN_REPO="${POWERDOWN_REPO:-https://github.com/${REPO_OWNER}/powerDown.git}"
+POWERDOWN_REF="${POWERDOWN_REF:-main}"
+POWERDOWN_INSTALL_DIR="${POWERDOWN_INSTALL_DIR:-/home/pi/powerDown}"
 
 NETRC_CREATED=0
 NETRC_BACKUP=""
@@ -40,6 +47,8 @@ Server installed and configured with signalk-server-setup.
 
 Options:
   --no-system-packages   Skip apt package installation
+  --no-log2ram           Skip log2ram installation for /var/log SD-card wear reduction
+  --no-powerdown         Skip powerDown UPS GPIO shutdown service installation
   --no-piper             Skip Piper and voice installation
   --no-restart           Do not restart Signal K at the end
   --help                 Show this help
@@ -48,6 +57,11 @@ Environment overrides:
   GITHUB_TOKEN                       GitHub token for private plugin repos
   REPO_OWNER                         GitHub owner, default: mcdonaldajr
   SIGNALK_HOME                       Signal K config directory, default: ~/.signalk
+  LOG2RAM_REPO                       Default: $LOG2RAM_REPO
+  LOG2RAM_REF                        Default: $LOG2RAM_REF
+  POWERDOWN_REPO                     Default: $POWERDOWN_REPO
+  POWERDOWN_REF                      Default: $POWERDOWN_REF
+  POWERDOWN_INSTALL_DIR              Default: $POWERDOWN_INSTALL_DIR
   AIS_PLUS_VERSION                   Default: $AIS_PLUS_VERSION
   NOTIFICATIONS_PLUS_VERSION         Default: $NOTIFICATIONS_PLUS_VERSION
   AIS_PLUS_AUDIO_VERSION             Default: $AIS_PLUS_AUDIO_VERSION
@@ -94,6 +108,12 @@ while [[ $# -gt 0 ]]; do
     --no-system-packages)
       INSTALL_SYSTEM_PACKAGES=0
       ;;
+    --no-log2ram)
+      INSTALL_LOG2RAM=0
+      ;;
+    --no-powerdown)
+      INSTALL_POWERDOWN=0
+      ;;
     --no-piper)
       INSTALL_PIPER=0
       ;;
@@ -131,7 +151,7 @@ if [[ "$INSTALL_SYSTEM_PACKAGES" == "1" ]]; then
   sudo apt-get update
   sudo apt-get install -y \
     git curl ca-certificates build-essential python3 python3-pip \
-    jq unzip tar gzip avahi-daemon avahi-utils libnss-mdns \
+    jq unzip tar gzip rsync python3-rpi.gpio avahi-daemon avahi-utils libnss-mdns \
     libavahi-compat-libdnssd-dev alsa-utils ffmpeg sox mpg123
 fi
 
@@ -194,6 +214,38 @@ install_piper() {
   rm -rf "$tmp"
 }
 
+install_log2ram() {
+  if [[ "$INSTALL_LOG2RAM" != "1" ]]; then
+    return
+  fi
+  if systemctl list-unit-files log2ram.service 2>/dev/null | grep -q '^log2ram\.service'; then
+    log "log2ram is already installed"
+    sudo systemctl enable log2ram.service >/dev/null 2>&1 || true
+    return
+  fi
+
+  log "Installing log2ram for /var/log SD-card wear reduction"
+  local tmp
+  tmp="$(mktemp -d)"
+  git clone --depth 1 --branch "$LOG2RAM_REF" "$LOG2RAM_REPO" "$tmp/log2ram"
+  (cd "$tmp/log2ram" && sudo ./install.sh)
+  rm -rf "$tmp"
+  log "log2ram installed. Reboot after bootstrap so /var/log is mounted from RAM."
+}
+
+install_powerdown() {
+  if [[ "$INSTALL_POWERDOWN" != "1" ]]; then
+    return
+  fi
+
+  log "Installing powerDown UPS GPIO shutdown service"
+  local tmp
+  tmp="$(mktemp -d)"
+  git clone --depth 1 --branch "$POWERDOWN_REF" "$POWERDOWN_REPO" "$tmp/powerDown"
+  (cd "$tmp/powerDown" && sudo INSTALL_DIR="$POWERDOWN_INSTALL_DIR" ./install.sh)
+  rm -rf "$tmp"
+}
+
 install_plugin() {
   local repo="$1"
   local version="$2"
@@ -204,6 +256,8 @@ install_plugin() {
 }
 
 setup_github_auth
+install_log2ram
+install_powerdown
 install_piper
 
 log "Installing Signal K plugins into $SIGNALK_HOME"
@@ -224,7 +278,11 @@ install_plugin "signalk-vessel-simulator" "$VESSEL_SIMULATOR_VERSION"
 install_plugin "signalk-self-track-simulator" "$SELF_TRACK_SIMULATOR_VERSION"
 install_plugin "signalk-pi-controller" "$PI_CONTROLLER_VERSION"
 
-mkdir -p "$HOME/CapturePlusLogs/logs" "$HOME/CapturePlusLogs/clips"
+mkdir -p \
+  "$HOME/CapturePlusLogs/buffer" \
+  "$HOME/CapturePlusLogs/captures" \
+  "$HOME/CapturePlusLogs/clips" \
+  "$HOME/CapturePlusLogs/voyages"
 
 if [[ "$RESTART_SIGNALK" == "1" ]]; then
   log "Restarting Signal K"
