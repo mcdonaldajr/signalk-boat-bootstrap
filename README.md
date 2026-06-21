@@ -59,7 +59,7 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 | Harbour Editor | `v3.0.1` |
 | Vessel Simulator | `v2.4.0` |
 | Self Track Simulator | `v1.2.2` |
-| Pi Controller | `v1.2.1` |
+| Pi Controller | `v1.2.0` |
 
 This set is the coordinated working baseline for the split Watchkeeper
 architecture.
