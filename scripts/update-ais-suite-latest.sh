@@ -11,6 +11,7 @@ NETRC_BACKUP=""
 
 PLUGINS=(
   signalk-notifications-plus
+  signalk-watchkeeper-alerts
   signalk-ais-plus-engine
   signalk-ais-plus-display
   signalk-ais-plus-console
@@ -21,6 +22,7 @@ PLUGINS=(
   signalk-ais-plus-apple-watch
   signalk-ai-snapshot
   signalk-capture-plus
+  signalk-voyage-debugger
   signalk-vessel-database
   signalk-harbour-editor
   signalk-vessel-simulator

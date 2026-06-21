@@ -19,6 +19,7 @@ Signal K plugins:
 - `signalk-ais-plus-display` (Watchkeeper Display)
 - `signalk-ais-plus-console` (Watchkeeper Console)
 - `signalk-notifications-plus`
+- `signalk-watchkeeper-alerts` (Watchkeeper Alerts, read-only crew viewer)
 - `signalk-ais-plus-audio`
 - `signalk-ais-plus-companion`
 - `signalk-audible-instruments`
@@ -45,8 +46,9 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 | Watchkeeper Display | `v2.2.10` |
 | Watchkeeper Console | `v0.3.7` |
 | Watchkeeper Notifications | `v1.0.3` |
+| Watchkeeper Alerts | `v0.1.0` |
 | Watchkeeper Audio | `v2.3.3` |
-| Watchkeeper Companion | `v3.3.2` |
+| Watchkeeper Companion (frozen fallback) | `v3.3.2` |
 | Watchkeeper Instrument Alerts | `v1.0.2` |
 | Watchkeeper Instruments | `v1.1.2` |
 | AIS Plus Apple Watch | `v1.0.1` |
@@ -64,8 +66,11 @@ architecture.
 
 Watchkeeper Traffic owns AIS decisions. Watchkeeper Notifications brokers live
 cross-provider notifications. Watchkeeper Audio renders speech. Watchkeeper
-Companion presents active alerts plus recent activity. Watchkeeper Display owns
-the chart view, and Watchkeeper Console provides the sailing workspace.
+Alerts is the new read-only crew viewer for active alerts, recent activity, and
+local device/headphone audio. Watchkeeper Companion and the Apple Watch app
+remain installed as frozen fallbacks while Alerts replaces them. Watchkeeper
+Display owns the chart view, and Watchkeeper Console provides the sailing
+workspace.
 
 ## Architecture Transition
 
@@ -224,20 +229,26 @@ Use `./update-ais-suite-latest.sh --main` only when you deliberately want the ne
    https://<your-pi-hostname>:3443/signalk-ais-plus-console/
    ```
 
-5. Open Watchkeeper Companion:
+5. Open Watchkeeper Alerts for a read-only crew alert viewer:
+
+   ```text
+   https://<your-pi-hostname>:3443/signalk-watchkeeper-alerts/
+   ```
+
+6. Open Watchkeeper Companion only if you need the frozen fallback:
 
    ```text
    https://<your-pi-hostname>:3443/signalk-ais-plus-companion/
    ```
 
-6. Open AI Snapshot when you need compact state for debugging or ChatGPT:
+7. Open AI Snapshot when you need compact state for debugging or ChatGPT:
 
    ```text
    https://<your-pi-hostname>:3443/signalk-ai-snapshot/
    ```
 
-7. Add charts separately.
-8. Verify the Pi support services:
+8. Add charts separately.
+9. Verify the Pi support services:
 
    ```bash
    systemctl status log2ram --no-pager

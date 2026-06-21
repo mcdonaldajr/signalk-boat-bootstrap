@@ -12,8 +12,10 @@ The bootstrap installs the proven split Watchkeeper applications:
 | `signalk-ais-plus-display` | `v2.2.10` | Watchkeeper Display; chart, targets, and alert view |
 | `signalk-ais-plus-console` | `v0.3.7` | Watchkeeper Console; sailing workspace shell |
 | `signalk-notifications-plus` | `v1.0.3` | Watchkeeper Notifications; live cross-provider notification broker |
+| `signalk-watchkeeper-alerts` | `v0.1.0` | Watchkeeper Alerts; read-only crew alert viewer with local device audio |
 | `signalk-ais-plus-audio` | `v2.3.3` | Watchkeeper Audio; speech rendering, queue, Pi speaker, and stream |
-| `signalk-ais-plus-companion` | `v3.3.2` | Watchkeeper Companion; phone-oriented alerts, activity, controls, and audio |
+| `signalk-ais-plus-companion` | `v3.3.2` | Watchkeeper Companion; frozen fallback during read-only Alerts migration |
+| `signalk-ais-plus-apple-watch` | `v1.0.1` | AIS Plus Apple Watch; frozen fallback during read-only Alerts migration |
 | `signalk-audible-instruments` | `v1.0.2` | Watchkeeper Instrument Alerts; instrument threshold and rate-of-change provider |
 | `signalk-instruments-plus` | `v1.1.2` | Watchkeeper Instruments; display-only instrument application |
 | `signalk-capture-plus` | `v1.2.1` | Signal K Logger; raw capture, replay, and clip extraction |
