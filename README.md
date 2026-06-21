@@ -42,7 +42,7 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 | Component | Default tag |
 | --- | --- |
 | Watchkeeper Traffic | `v0.8.3` |
-| Watchkeeper Display | `v2.2.7` |
+| Watchkeeper Display | `v2.2.8` |
 | Watchkeeper Console | `v0.3.7` |
 | Watchkeeper Notifications | `v1.0.3` |
 | Watchkeeper Audio | `v2.3.3` |
