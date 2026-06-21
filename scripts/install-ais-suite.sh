@@ -8,13 +8,11 @@ INSTALL_PIPER="${INSTALL_PIPER:-1}"
 INSTALL_SYSTEM_PACKAGES="${INSTALL_SYSTEM_PACKAGES:-1}"
 INSTALL_LOG2RAM="${INSTALL_LOG2RAM:-1}"
 INSTALL_POWERDOWN="${INSTALL_POWERDOWN:-1}"
-INSTALL_LEGACY_AIS_PLUS="${INSTALL_LEGACY_AIS_PLUS:-0}"
 RESTART_SIGNALK="${RESTART_SIGNALK:-1}"
 
-AIS_PLUS_VERSION="${AIS_PLUS_VERSION:-v8.0.0}"
 WATCHKEEPER_TRAFFIC_VERSION="${WATCHKEEPER_TRAFFIC_VERSION:-v0.8.3}"
-WATCHKEEPER_DISPLAY_VERSION="${WATCHKEEPER_DISPLAY_VERSION:-v2.2.2}"
-WATCHKEEPER_CONSOLE_VERSION="${WATCHKEEPER_CONSOLE_VERSION:-v0.3.6}"
+WATCHKEEPER_DISPLAY_VERSION="${WATCHKEEPER_DISPLAY_VERSION:-v2.2.3}"
+WATCHKEEPER_CONSOLE_VERSION="${WATCHKEEPER_CONSOLE_VERSION:-v0.3.7}"
 NOTIFICATIONS_PLUS_VERSION="${NOTIFICATIONS_PLUS_VERSION:-v1.0.3}"
 AIS_PLUS_AUDIO_VERSION="${AIS_PLUS_AUDIO_VERSION:-v2.3.2}"
 AIS_PLUS_COMPANION_VERSION="${AIS_PLUS_COMPANION_VERSION:-v3.3.2}"
@@ -55,7 +53,6 @@ Options:
   --no-log2ram           Skip log2ram installation for /var/log SD-card wear reduction
   --no-powerdown         Skip powerDown UPS GPIO shutdown service installation
   --no-piper             Skip Piper and voice installation
-  --with-legacy-ais-plus Install the old combined AIS Plus app as a rollback aid
   --no-restart           Do not restart Signal K at the end
   --help                 Show this help
 
@@ -68,7 +65,6 @@ Environment overrides:
   POWERDOWN_REPO                     Default: $POWERDOWN_REPO
   POWERDOWN_REF                      Default: $POWERDOWN_REF
   POWERDOWN_INSTALL_DIR              Default: $POWERDOWN_INSTALL_DIR
-  AIS_PLUS_VERSION                   Legacy combined app tag, default: $AIS_PLUS_VERSION
   WATCHKEEPER_TRAFFIC_VERSION        Default: $WATCHKEEPER_TRAFFIC_VERSION
   WATCHKEEPER_DISPLAY_VERSION        Default: $WATCHKEEPER_DISPLAY_VERSION
   WATCHKEEPER_CONSOLE_VERSION        Default: $WATCHKEEPER_CONSOLE_VERSION
@@ -126,9 +122,6 @@ while [[ $# -gt 0 ]]; do
       ;;
     --no-piper)
       INSTALL_PIPER=0
-      ;;
-    --with-legacy-ais-plus)
-      INSTALL_LEGACY_AIS_PLUS=1
       ;;
     --no-restart)
       RESTART_SIGNALK=0
@@ -284,9 +277,6 @@ install_plugin "signalk-notifications-plus" "$NOTIFICATIONS_PLUS_VERSION"
 install_plugin "signalk-ais-plus-engine" "$WATCHKEEPER_TRAFFIC_VERSION"
 install_plugin "signalk-ais-plus-display" "$WATCHKEEPER_DISPLAY_VERSION"
 install_plugin "signalk-ais-plus-console" "$WATCHKEEPER_CONSOLE_VERSION"
-if [[ "$INSTALL_LEGACY_AIS_PLUS" == "1" ]]; then
-  install_plugin "signalk-ais-plus" "$AIS_PLUS_VERSION"
-fi
 install_plugin "signalk-audible-instruments" "$AUDIBLE_INSTRUMENTS_VERSION"
 install_plugin "signalk-instruments-plus" "$INSTRUMENTS_PLUS_VERSION"
 install_plugin "signalk-ais-plus-audio" "$AIS_PLUS_AUDIO_VERSION"

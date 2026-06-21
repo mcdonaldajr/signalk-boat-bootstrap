@@ -9,8 +9,8 @@ The bootstrap installs the proven split Watchkeeper applications:
 | Repository | Baseline | Current role |
 | --- | --- | --- |
 | `signalk-ais-plus-engine` | `v0.8.3` | Watchkeeper Traffic; authoritative AIS decisions and notifications |
-| `signalk-ais-plus-display` | `v2.2.2` | Watchkeeper Display; chart, targets, and alert view |
-| `signalk-ais-plus-console` | `v0.3.6` | Watchkeeper Console; sailing workspace shell |
+| `signalk-ais-plus-display` | `v2.2.3` | Watchkeeper Display; chart, targets, and alert view |
+| `signalk-ais-plus-console` | `v0.3.7` | Watchkeeper Console; sailing workspace shell |
 | `signalk-notifications-plus` | `v1.0.3` | Watchkeeper Notifications; live cross-provider notification broker |
 | `signalk-ais-plus-audio` | `v2.3.2` | Watchkeeper Audio; speech rendering, queue, Pi speaker, and stream |
 | `signalk-ais-plus-companion` | `v3.3.2` | Watchkeeper Companion; phone-oriented alerts, activity, controls, and audio |
@@ -55,7 +55,5 @@ Key principles:
 ## Release policy
 
 - The split Watchkeeper suite is the default for fresh-card installs.
-- The old combined `signalk-ais-plus` package remains an explicit rollback
-  option via `--with-legacy-ais-plus`.
 - New work proceeds additively behind versioned contracts.
 - Every package/internal rename needs a documented rollback to this baseline.

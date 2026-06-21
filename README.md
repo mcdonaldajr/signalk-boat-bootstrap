@@ -42,8 +42,8 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 | Component | Default tag |
 | --- | --- |
 | Watchkeeper Traffic | `v0.8.3` |
-| Watchkeeper Display | `v2.2.2` |
-| Watchkeeper Console | `v0.3.6` |
+| Watchkeeper Display | `v2.2.3` |
+| Watchkeeper Console | `v0.3.7` |
 | Watchkeeper Notifications | `v1.0.3` |
 | Watchkeeper Audio | `v2.3.2` |
 | Watchkeeper Companion | `v3.3.2` |
@@ -60,9 +60,7 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 | Pi Controller | `v1.2.0` |
 
 This set is the coordinated working baseline for the split Watchkeeper
-architecture. The old combined AIS Plus app remains available as an explicit
-rollback install with `--with-legacy-ais-plus`, but it is no longer installed by
-default on fresh cards.
+architecture.
 
 Watchkeeper Traffic owns AIS decisions. Watchkeeper Notifications brokers live
 cross-provider notifications. Watchkeeper Audio renders speech. Watchkeeper
@@ -72,13 +70,13 @@ the chart view, and Watchkeeper Console provides the sailing workspace.
 ## Architecture Transition
 
 The simulator migration to the split architecture is complete. Bootstrap now
-installs the split Watchkeeper components by default. During the naming
-migration, npm package names, plugin ids, and Signal K paths intentionally keep
-their existing `signalk-*` / `aisPlus*` compatibility names; the full package
-rename is planned for the fresh SD-card install window.
+installs the split Watchkeeper components only. During the naming migration, npm
+package names, plugin ids, and Signal K paths intentionally keep their existing
+`signalk-*` / `aisPlus*` compatibility names; the full package rename is planned
+for the fresh SD-card install window.
 
-Suite architecture, Signal K integration rules, observability requirements, and
-migration options are maintained in the private
+Suite architecture, Signal K integration rules, and observability requirements
+are maintained in the private
 [`ais-plus-architecture`](https://github.com/mcdonaldajr/ais-plus-architecture)
 repository.
 
@@ -178,7 +176,6 @@ Useful options:
 Useful environment overrides:
 
 ```bash
-AIS_PLUS_VERSION=v8.0.0 ./scripts/install-ais-suite.sh
 WATCHKEEPER_TRAFFIC_VERSION=v0.8.3 ./scripts/install-ais-suite.sh
 AI_SNAPSHOT_VERSION=v0.2.1 ./scripts/install-ais-suite.sh
 REPO_OWNER=mcdonaldajr ./scripts/install-ais-suite.sh
