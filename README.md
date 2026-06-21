@@ -240,7 +240,7 @@ Use `./update-ais-suite-latest.sh --main` only when you deliberately want the ne
 
 - The script should be run as the normal Pi user, not with `sudo`.
 - The script uses `sudo` internally for operating-system packages, log2ram, powerDown, `/opt/piper`, and restarting Signal K.
-- log2ram keeps normal system logs in RAM and syncs them back according to its own defaults. CapturePlus and Voyage Debugger files are intentionally kept on disk under `~/CapturePlusLogs`.
+- log2ram keeps normal system logs in RAM and syncs them back according to its own defaults. CapturePlus and Voyage Capture files are intentionally kept on disk under `~/CapturePlusLogs`.
 - powerDown defaults to BCM GPIO 24, matching the `mcdonaldajr/powerDown` repository. Use `--no-powerdown` if the UPS shutdown signal is not fitted.
 - Piper is installed automatically on 64-bit Raspberry Pi OS. Other architectures are skipped with a warning.
 - The default Piper voice is `en_GB-alan-medium`, installed into `~/piper-voices`.
