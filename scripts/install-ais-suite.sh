@@ -148,6 +148,25 @@ if ! command -v node >/dev/null 2>&1; then
   die "node is not installed. Install Signal K Server first, then run this script."
 fi
 
+NODE_VERSION="$(node -p 'process.versions.node')"
+NODE_MAJOR="${NODE_VERSION%%.*}"
+NPM_VERSION="$(npm -v)"
+NPM_MAJOR="${NPM_VERSION%%.*}"
+
+if (( NODE_MAJOR < 22 )); then
+  die "Node.js ${NODE_VERSION} is too old for current Signal K Server. Install Node.js 24 recommended, or at least Node.js 22, then rerun this script."
+fi
+
+if (( NODE_MAJOR < 24 )); then
+  warn "Node.js ${NODE_VERSION} is supported by Signal K, but Node.js 24 is the current recommended fresh-install version."
+fi
+
+if (( NPM_MAJOR < 10 )); then
+  warn "npm ${NPM_VERSION} is old. Current Signal K Raspberry Pi docs recommend npm 11 or later with Node.js 24."
+fi
+
+log "Detected Node.js ${NODE_VERSION} and npm ${NPM_VERSION}"
+
 if [[ ! -d "$SIGNALK_HOME" ]]; then
   die "$SIGNALK_HOME does not exist. Run sudo signalk-server-setup first, then run this script."
 fi

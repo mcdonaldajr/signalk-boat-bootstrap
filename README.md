@@ -89,7 +89,15 @@ High-resolution diagrams showing how the Watchkeeper suite plugins interact are 
 
 ## Start With Signal K
 
-Run the official Signal K installation first. Signal K currently documents Raspberry Pi installation as:
+Run the official Signal K installation first. Watchkeeper Bootstrap does not
+install Node.js, npm, or Signal K Server; it checks the already-installed
+runtime before installing the Watchkeeper apps.
+
+For a fresh Raspberry Pi card, use the current Signal K recommendation:
+Node.js 24.x with npm 11 or later. Current Signal K Server releases require
+Node.js 22 or later, but Node.js 24 is the better clean-install target.
+
+Signal K currently documents Raspberry Pi installation as:
 
 1. Install Node.js and npm.
 2. Install Signal K Server with npm.
@@ -105,6 +113,8 @@ Follow the official Signal K documentation for the current install steps:
 - [Signal K installation overview](https://signalk.org/installation)
 
 Only run the Watchkeeper bootstrap after `signalk-server-setup` has created `~/.signalk`.
+The Bootstrap installer fails fast on Node.js older than 22, warns on Node.js
+22/23, and prints the detected Node.js/npm versions at startup.
 
 ## GitHub Token
 
