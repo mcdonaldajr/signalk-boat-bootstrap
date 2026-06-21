@@ -50,7 +50,7 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 | Watchkeeper Audio | `v2.3.3` |
 | Watchkeeper Companion (frozen fallback) | `v3.3.2` |
 | Watchkeeper Instrument Alerts | `v1.0.2` |
-| Watchkeeper Instruments | `v1.1.3` |
+| Watchkeeper Instruments | `v1.2.0` |
 | AIS Plus Apple Watch | `v1.0.1` |
 | AI Snapshot | `v0.2.1` |
 | Signal K Logger | `v1.2.1` |
