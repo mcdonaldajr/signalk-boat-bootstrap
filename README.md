@@ -24,6 +24,7 @@ Signal K plugins:
 - `signalk-ais-plus-apple-watch`
 - `signalk-ai-snapshot`
 - `signalk-capture-plus`
+- `signalk-voyage-debugger` (Voyage Capture)
 - `signalk-vessel-database`
 - `signalk-harbour-editor`
 - `signalk-vessel-simulator`
@@ -45,8 +46,9 @@ The default tags in this repository are kept as a coordinated AIS Plus suite. Th
 | Audible Instruments | `v1.0.0` |
 | Instruments Plus | `v1.0.0` |
 | AIS Plus Apple Watch | `v1.0.1` |
-| AI Snapshot | `v0.1.8` |
-| CapturePlus | `v1.0.12` |
+| AI Snapshot | `v0.2.1` |
+| CapturePlus | `v1.2.0` |
+| Voyage Capture | `v0.1.8` |
 | Vessel Database | `v1.0.0` |
 | Harbour Editor | `v3.0.1` |
 | Vessel Simulator | `v2.4.0` |
@@ -178,7 +180,7 @@ Useful environment overrides:
 
 ```bash
 AIS_PLUS_VERSION=v8.0.0 ./scripts/install-ais-suite.sh
-AI_SNAPSHOT_VERSION=v0.1.8 ./scripts/install-ais-suite.sh
+AI_SNAPSHOT_VERSION=v0.2.1 ./scripts/install-ais-suite.sh
 REPO_OWNER=mcdonaldajr ./scripts/install-ais-suite.sh
 SIGNALK_HOME=/home/pi/.signalk ./scripts/install-ais-suite.sh
 POWERDOWN_INSTALL_DIR=/opt/powerDown ./scripts/install-ais-suite.sh
