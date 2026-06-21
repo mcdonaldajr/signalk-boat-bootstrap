@@ -9,7 +9,7 @@ The bootstrap installs the proven split Watchkeeper applications:
 | Repository | Baseline | Current role |
 | --- | --- | --- |
 | `signalk-ais-plus-engine` | `v0.8.3` | Watchkeeper Traffic; authoritative AIS decisions and notifications |
-| `signalk-ais-plus-display` | `v2.2.3` | Watchkeeper Display; chart, targets, and alert view |
+| `signalk-ais-plus-display` | `v2.2.4` | Watchkeeper Display; chart, targets, and alert view |
 | `signalk-ais-plus-console` | `v0.3.7` | Watchkeeper Console; sailing workspace shell |
 | `signalk-notifications-plus` | `v1.0.3` | Watchkeeper Notifications; live cross-provider notification broker |
 | `signalk-ais-plus-audio` | `v2.3.2` | Watchkeeper Audio; speech rendering, queue, Pi speaker, and stream |
@@ -17,7 +17,7 @@ The bootstrap installs the proven split Watchkeeper applications:
 | `signalk-audible-instruments` | `v1.0.2` | Watchkeeper Instrument Alerts; instrument threshold and rate-of-change provider |
 | `signalk-instruments-plus` | `v1.1.2` | Watchkeeper Instruments; display-only instrument application |
 | `signalk-capture-plus` | `v1.2.1` | Signal K Logger; raw capture, replay, and clip extraction |
-| `signalk-voyage-debugger` | `v0.1.9` | Watchkeeper Capture; voyage-level capture orchestration and bundles |
+| `signalk-voyage-debugger` | `v0.1.10` | Watchkeeper Capture; voyage-level capture orchestration and bundles |
 
 Package names and Signal K paths intentionally keep their old compatibility
 names until the planned fresh-card package rename.
