@@ -59,7 +59,7 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 | AI Snapshot | `v0.2.1` |
 | Signal K Logger | `v1.2.1` |
 | Watchkeeper Capture | `v0.1.10` |
-| Watchkeeper Voyage Viewer | `v0.1.3` |
+| Watchkeeper Voyage Viewer | `v0.1.4` |
 | Vessel Database | `v1.0.0` |
 | Harbour Editor | `v3.0.1` |
 | Vessel Simulator | `v2.4.0` |
@@ -238,7 +238,7 @@ Useful environment overrides:
 WATCHKEEPER_TRAFFIC_VERSION=v0.8.3 ./scripts/install-ais-suite.sh
 RESOURCES_PROVIDER_VERSION=1.5.1 ./scripts/install-ais-suite.sh
 AI_SNAPSHOT_VERSION=v0.2.1 ./scripts/install-ais-suite.sh
-VOYAGE_VIEWER_VERSION=v0.1.3 ./scripts/install-ais-suite.sh
+VOYAGE_VIEWER_VERSION=v0.1.4 ./scripts/install-ais-suite.sh
 REPO_OWNER=mcdonaldajr ./scripts/install-ais-suite.sh
 SIGNALK_HOME=/home/pi/.signalk ./scripts/install-ais-suite.sh
 POWERDOWN_INSTALL_DIR=/opt/powerDown ./scripts/install-ais-suite.sh
