@@ -165,6 +165,29 @@ export GITHUB_TOKEN
 
 The installer writes the token to a temporary `.netrc` file so `npm` and `git` can read private GitHub repositories. It removes the temporary file when the install finishes.
 
+GitHub CLI release downloads need their own authentication as well. If you use
+manual commands such as `gh release download` against private Watchkeeper repos,
+either export the same token as `GH_TOKEN` for that shell:
+
+```bash
+export GH_TOKEN="$GITHUB_TOKEN"
+gh auth status
+```
+
+or store it in `gh`:
+
+```bash
+printf '%s\n' "$GITHUB_TOKEN" | gh auth login --with-token
+gh auth status
+```
+
+If `gh auth status` reports bad credentials, refresh or remove the old login:
+
+```bash
+gh auth logout -h github.com
+printf '%s\n' "$GITHUB_TOKEN" | gh auth login --with-token
+```
+
 ## Run From GitHub
 
 Once this repository is public, the normal install command will be:
