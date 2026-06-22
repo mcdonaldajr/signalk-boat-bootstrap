@@ -171,9 +171,22 @@ install_plugin() {
   }
 }
 
+install_npm_package_latest() {
+  local package="$1"
+  local spec="${package}@latest"
+  log "Installing ${spec}"
+  npm install "$spec" --omit=dev --no-package-lock || {
+    warn "Install failed for ${spec}; verifying npm cache and retrying once."
+    npm cache verify || true
+    npm install "$spec" --omit=dev --no-package-lock
+  }
+}
+
 log "Updating Watchkeeper suite in $SIGNALK_HOME"
 setup_github_auth
 cd "$SIGNALK_HOME"
+
+install_npm_package_latest "@signalk/resources-provider"
 
 for plugin in "${PLUGINS[@]}"; do
   install_plugin "$plugin"

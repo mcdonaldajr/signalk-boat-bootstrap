@@ -10,6 +10,7 @@ INSTALL_LOG2RAM="${INSTALL_LOG2RAM:-1}"
 INSTALL_POWERDOWN="${INSTALL_POWERDOWN:-1}"
 RESTART_SIGNALK="${RESTART_SIGNALK:-1}"
 
+RESOURCES_PROVIDER_VERSION="${RESOURCES_PROVIDER_VERSION:-1.5.1}"
 WATCHKEEPER_TRAFFIC_VERSION="${WATCHKEEPER_TRAFFIC_VERSION:-v0.8.3}"
 WATCHKEEPER_DISPLAY_VERSION="${WATCHKEEPER_DISPLAY_VERSION:-v2.2.10}"
 WATCHKEEPER_CONSOLE_VERSION="${WATCHKEEPER_CONSOLE_VERSION:-v0.3.9}"
@@ -66,6 +67,7 @@ Environment overrides:
   POWERDOWN_REPO                     Default: $POWERDOWN_REPO
   POWERDOWN_REF                      Default: $POWERDOWN_REF
   POWERDOWN_INSTALL_DIR              Default: $POWERDOWN_INSTALL_DIR
+  RESOURCES_PROVIDER_VERSION         Default: $RESOURCES_PROVIDER_VERSION
   WATCHKEEPER_TRAFFIC_VERSION        Default: $WATCHKEEPER_TRAFFIC_VERSION
   WATCHKEEPER_DISPLAY_VERSION        Default: $WATCHKEEPER_DISPLAY_VERSION
   WATCHKEEPER_CONSOLE_VERSION        Default: $WATCHKEEPER_CONSOLE_VERSION
@@ -286,6 +288,19 @@ install_plugin() {
   }
 }
 
+install_npm_package() {
+  local package="$1"
+  local version="$2"
+  local spec="${package}@${version}"
+
+  log "Installing ${spec}"
+  npm install "$spec" --omit=dev --no-package-lock || {
+    warn "Install failed for ${spec}; verifying npm cache and retrying once."
+    npm cache verify || true
+    npm install "$spec" --omit=dev --no-package-lock
+  }
+}
+
 setup_github_auth
 install_log2ram
 install_powerdown
@@ -294,6 +309,7 @@ install_piper
 log "Installing Signal K plugins into $SIGNALK_HOME"
 cd "$SIGNALK_HOME"
 
+install_npm_package "@signalk/resources-provider" "$RESOURCES_PROVIDER_VERSION"
 install_plugin "signalk-notifications-plus" "$NOTIFICATIONS_PLUS_VERSION"
 install_plugin "signalk-watchkeeper-alerts" "$WATCHKEEPER_ALERTS_VERSION"
 install_plugin "signalk-ais-plus-engine" "$WATCHKEEPER_TRAFFIC_VERSION"

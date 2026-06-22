@@ -15,6 +15,7 @@ Support services:
 
 Signal K plugins:
 
+- `@signalk/resources-provider` (standard Signal K resource storage used for harbour regions, charts, routes, and notes)
 - `signalk-ais-plus-engine` (Watchkeeper Traffic)
 - `signalk-ais-plus-display` (Watchkeeper Display)
 - `signalk-ais-plus-console` (Watchkeeper Console)
@@ -42,6 +43,7 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 
 | Component | Default tag |
 | --- | --- |
+| Signal K Resources Provider | `1.5.1` |
 | Watchkeeper Traffic | `v0.8.3` |
 | Watchkeeper Display | `v2.2.10` |
 | Watchkeeper Console | `v0.3.9` |
@@ -63,6 +65,12 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 
 This set is the coordinated working baseline for the split Watchkeeper
 architecture.
+
+`@signalk/resources-provider` is a required Signal K baseline dependency for
+Watchkeeper Auto Profile. Watchkeeper Traffic reads `Harbour:` region resources
+through Signal K's resources API; if the provider is disabled or missing, Traffic
+cannot see harbour limits after a reboot and Auto Profile falls back to the
+configured outside profile, normally Coastal.
 
 Watchkeeper Traffic owns AIS decisions. Watchkeeper Notifications brokers live
 cross-provider notifications. Watchkeeper Audio renders speech. Watchkeeper
@@ -192,6 +200,7 @@ Useful environment overrides:
 
 ```bash
 WATCHKEEPER_TRAFFIC_VERSION=v0.8.3 ./scripts/install-ais-suite.sh
+RESOURCES_PROVIDER_VERSION=1.5.1 ./scripts/install-ais-suite.sh
 AI_SNAPSHOT_VERSION=v0.2.1 ./scripts/install-ais-suite.sh
 REPO_OWNER=mcdonaldajr ./scripts/install-ais-suite.sh
 SIGNALK_HOME=/home/pi/.signalk ./scripts/install-ais-suite.sh
@@ -223,6 +232,8 @@ Use `./update-ais-suite-latest.sh --main` only when you deliberately want the ne
 1. Open the Signal K Admin UI.
 2. Log in as admin.
 3. Enable and configure the installed plugins if Signal K has not enabled them automatically.
+   Keep `@signalk/resources-provider` enabled if you use Watchkeeper harbour
+   limits, Auto Profile, charts, routes, or notes.
 4. Open Watchkeeper Console:
 
    ```text

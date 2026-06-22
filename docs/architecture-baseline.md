@@ -8,6 +8,7 @@ The bootstrap installs the proven split Watchkeeper applications:
 
 | Repository | Baseline | Current role |
 | --- | --- | --- |
+| `@signalk/resources-provider` | `1.5.1` | Standard Signal K resources API provider; required for `Harbour:` regions used by Watchkeeper Auto Profile |
 | `signalk-ais-plus-engine` | `v0.8.3` | Watchkeeper Traffic; authoritative AIS decisions and notifications |
 | `signalk-ais-plus-display` | `v2.2.10` | Watchkeeper Display; chart, targets, and alert view |
 | `signalk-ais-plus-console` | `v0.3.9` | Watchkeeper Console; sailing workspace shell |
@@ -23,6 +24,12 @@ The bootstrap installs the proven split Watchkeeper applications:
 
 Package names and Signal K paths intentionally keep their old compatibility
 names until the planned fresh-card package rename.
+
+`@signalk/resources-provider` must remain enabled on the boat profile. Harbour
+Editor writes `Harbour:` region resources through it, and Watchkeeper Traffic
+reads the same Signal K regions collection for Auto Profile. If the provider is
+disabled or unavailable, Auto Profile cannot see harbour limits after a reboot
+and falls back to the configured outside profile, normally Coastal.
 
 ## Pi support services
 
