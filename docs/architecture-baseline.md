@@ -11,7 +11,7 @@ The bootstrap installs the proven split Watchkeeper applications:
 | `@signalk/resources-provider` | `1.5.1` | Standard Signal K resources API provider; required for `Harbour:` regions used by Watchkeeper Auto Profile |
 | `signalk-ais-plus-engine` | `v0.8.3` | Watchkeeper Traffic; authoritative AIS decisions and notifications |
 | `signalk-ais-plus-display` | `v2.2.10` | Watchkeeper Display; chart, targets, and alert view |
-| `signalk-ais-plus-console` | `v0.3.9` | Watchkeeper Console; sailing workspace shell |
+| `signalk-ais-plus-console` | `v0.3.15` | Watchkeeper Console; sailing workspace shell |
 | `signalk-notifications-plus` | `v1.0.4` | Watchkeeper Notifications; live cross-provider notification broker and diagnostics webapp |
 | `signalk-watchkeeper-alerts` | `v0.1.1` | Watchkeeper Alerts; read-only crew alert viewer with local device audio |
 | `signalk-ais-plus-audio` | `v2.3.3` | Watchkeeper Audio; speech rendering, queue, Pi speaker, and stream |

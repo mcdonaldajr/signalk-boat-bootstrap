@@ -48,7 +48,7 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 | Signal K Resources Provider | `1.5.1` |
 | Watchkeeper Traffic | `v0.8.3` |
 | Watchkeeper Display | `v2.2.10` |
-| Watchkeeper Console | `v0.3.9` |
+| Watchkeeper Console | `v0.3.15` |
 | Watchkeeper Notifications | `v1.0.4` |
 | Watchkeeper Alerts | `v0.1.1` |
 | Watchkeeper Audio | `v2.3.3` |
