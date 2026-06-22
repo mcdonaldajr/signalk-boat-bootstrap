@@ -57,7 +57,7 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 | Watchkeeper Instruments | `v1.2.2` |
 | AIS Plus Apple Watch | `v1.0.1` |
 | AI Snapshot | `v0.2.1` |
-| Signal K Logger | `v1.2.1` |
+| Signal K Logger | `v1.2.3` |
 | Watchkeeper Capture | `v0.1.10` |
 | Watchkeeper Voyage Viewer | `v0.1.9` |
 | Vessel Database | `v1.0.0` |
