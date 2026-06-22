@@ -24,6 +24,7 @@ AIS_PLUS_APPLE_WATCH_VERSION="${AIS_PLUS_APPLE_WATCH_VERSION:-v1.0.1}"
 AI_SNAPSHOT_VERSION="${AI_SNAPSHOT_VERSION:-v0.2.1}"
 CAPTURE_PLUS_VERSION="${CAPTURE_PLUS_VERSION:-v1.2.1}"
 VOYAGE_CAPTURE_VERSION="${VOYAGE_CAPTURE_VERSION:-v0.1.10}"
+VOYAGE_VIEWER_VERSION="${VOYAGE_VIEWER_VERSION:-v0.1.1}"
 VESSEL_DATABASE_VERSION="${VESSEL_DATABASE_VERSION:-v1.0.0}"
 HARBOUR_EDITOR_VERSION="${HARBOUR_EDITOR_VERSION:-v3.0.1}"
 VESSEL_SIMULATOR_VERSION="${VESSEL_SIMULATOR_VERSION:-v2.4.0}"
@@ -81,6 +82,7 @@ Environment overrides:
   AI_SNAPSHOT_VERSION                Default: $AI_SNAPSHOT_VERSION
   CAPTURE_PLUS_VERSION               Default: $CAPTURE_PLUS_VERSION
   VOYAGE_CAPTURE_VERSION             Default: $VOYAGE_CAPTURE_VERSION
+  VOYAGE_VIEWER_VERSION              Default: $VOYAGE_VIEWER_VERSION
   VESSEL_DATABASE_VERSION            Default: $VESSEL_DATABASE_VERSION
   HARBOUR_EDITOR_VERSION             Default: $HARBOUR_EDITOR_VERSION
   VESSEL_SIMULATOR_VERSION           Default: $VESSEL_SIMULATOR_VERSION
@@ -180,8 +182,10 @@ if [[ "$INSTALL_SYSTEM_PACKAGES" == "1" ]]; then
   sudo apt-get update
   sudo apt-get install -y \
     git curl ca-certificates build-essential python3 python3-pip \
-    jq unzip tar gzip rsync python3-rpi.gpio avahi-daemon avahi-utils libnss-mdns \
+    gh jq unzip tar gzip rsync python3-rpi.gpio avahi-daemon avahi-utils libnss-mdns \
     libavahi-compat-libdnssd-dev alsa-utils ffmpeg sox mpg123
+elif ! command -v gh >/dev/null 2>&1; then
+  warn "GitHub CLI (gh) is not installed. Install it with 'sudo apt-get install gh' before using private GitHub release download commands."
 fi
 
 setup_github_auth() {
@@ -323,6 +327,7 @@ install_plugin "signalk-ais-plus-apple-watch" "$AIS_PLUS_APPLE_WATCH_VERSION"
 install_plugin "signalk-ai-snapshot" "$AI_SNAPSHOT_VERSION"
 install_plugin "signalk-capture-plus" "$CAPTURE_PLUS_VERSION"
 install_plugin "signalk-voyage-debugger" "$VOYAGE_CAPTURE_VERSION"
+install_plugin "signalk-voyage-viewer" "$VOYAGE_VIEWER_VERSION"
 install_plugin "signalk-vessel-database" "$VESSEL_DATABASE_VERSION"
 install_plugin "signalk-harbour-editor" "$HARBOUR_EDITOR_VERSION"
 install_plugin "signalk-vessel-simulator" "$VESSEL_SIMULATOR_VERSION"

@@ -23,6 +23,7 @@ PLUGINS=(
   signalk-ai-snapshot
   signalk-capture-plus
   signalk-voyage-debugger
+  signalk-voyage-viewer
   signalk-vessel-database
   signalk-harbour-editor
   signalk-vessel-simulator

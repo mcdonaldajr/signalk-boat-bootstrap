@@ -10,6 +10,7 @@ The bootstrap script installs Raspberry Pi OS packages used by the Watchkeeper s
 
 Support services:
 
+- `gh` / GitHub CLI: used for authenticated private GitHub release downloads when installing tagged `.tgz` release assets by hand.
 - [`log2ram`](https://github.com/azlux/log2ram): mounts `/var/log` in RAM to reduce SD-card wear from chatty system and Signal K access logs. Voyage data remains on disk.
 - [`powerDown`](https://github.com/mcdonaldajr/powerDown): UPS GPIO auto-shutdown service. By default it watches BCM GPIO 24 and shuts the Pi down if power is not restored within the configured grace period.
 
@@ -29,6 +30,7 @@ Signal K plugins:
 - `signalk-ai-snapshot`
 - `signalk-capture-plus` (Signal K Logger)
 - `signalk-voyage-debugger` (Watchkeeper Capture)
+- `signalk-voyage-viewer` (Watchkeeper Voyage Viewer)
 - `signalk-vessel-database`
 - `signalk-harbour-editor`
 - `signalk-vessel-simulator`
@@ -57,6 +59,7 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 | AI Snapshot | `v0.2.1` |
 | Signal K Logger | `v1.2.1` |
 | Watchkeeper Capture | `v0.1.10` |
+| Watchkeeper Voyage Viewer | `v0.1.1` |
 | Vessel Database | `v1.0.0` |
 | Harbour Editor | `v3.0.1` |
 | Vessel Simulator | `v2.4.0` |
@@ -78,7 +81,8 @@ Alerts is the new read-only crew viewer for active alerts, recent activity, and
 local device/headphone audio. Watchkeeper Companion and the Apple Watch app
 remain installed as frozen fallbacks while Alerts replaces them. Watchkeeper
 Display owns the chart view, and Watchkeeper Console provides the sailing
-workspace.
+workspace. Watchkeeper Capture records voyage bundles, and Watchkeeper Voyage
+Viewer plots those bundles and exports GPX tracks.
 
 ## Architecture Transition
 
@@ -128,6 +132,15 @@ Follow the official Signal K documentation for the current install steps:
 Only run the Watchkeeper bootstrap after `signalk-server-setup` has created `~/.signalk`.
 The Bootstrap installer fails fast on Node.js older than 22, warns on Node.js
 22/23, and prints the detected Node.js/npm versions at startup.
+
+The bootstrap installs GitHub CLI (`gh`) via `apt` because several private
+Watchkeeper release/install commands use `gh release download` to fetch tagged
+`.tgz` assets. If you run with `--no-system-packages`, install it manually:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y gh
+```
 
 ## GitHub Token
 
@@ -202,6 +215,7 @@ Useful environment overrides:
 WATCHKEEPER_TRAFFIC_VERSION=v0.8.3 ./scripts/install-ais-suite.sh
 RESOURCES_PROVIDER_VERSION=1.5.1 ./scripts/install-ais-suite.sh
 AI_SNAPSHOT_VERSION=v0.2.1 ./scripts/install-ais-suite.sh
+VOYAGE_VIEWER_VERSION=v0.1.1 ./scripts/install-ais-suite.sh
 REPO_OWNER=mcdonaldajr ./scripts/install-ais-suite.sh
 SIGNALK_HOME=/home/pi/.signalk ./scripts/install-ais-suite.sh
 POWERDOWN_INSTALL_DIR=/opt/powerDown ./scripts/install-ais-suite.sh
@@ -258,8 +272,14 @@ Use `./update-ais-suite-latest.sh --main` only when you deliberately want the ne
    https://<your-pi-hostname>:3443/signalk-ai-snapshot/
    ```
 
-8. Add charts separately.
-9. Verify the Pi support services:
+8. Open Watchkeeper Voyage Viewer to map and export recorded voyage tracks:
+
+   ```text
+   https://<your-pi-hostname>:3443/signalk-voyage-viewer/
+   ```
+
+9. Add charts separately.
+10. Verify the Pi support services:
 
    ```bash
    systemctl status log2ram --no-pager
@@ -274,6 +294,7 @@ Use `./update-ais-suite-latest.sh --main` only when you deliberately want the ne
 - log2ram keeps normal system logs in RAM and syncs them back according to its own defaults. Signal K Logger and Watchkeeper Capture files are intentionally kept on disk under `~/CapturePlusLogs`.
 - powerDown defaults to BCM GPIO 24, matching the `mcdonaldajr/powerDown` repository. Use `--no-powerdown` if the UPS shutdown signal is not fitted.
 - Piper is installed automatically on 64-bit Raspberry Pi OS. Other architectures are skipped with a warning.
+- GitHub CLI (`gh`) is installed by the default system package step. It is useful for authenticated release downloads from private Watchkeeper repositories.
 - The default Piper voice is `en_GB-alan-medium`, installed into `~/piper-voices`.
 - Signal K Logger directories are created at `~/CapturePlusLogs/buffer`, `~/CapturePlusLogs/captures`, `~/CapturePlusLogs/clips`, and `~/CapturePlusLogs/voyages`.
 - AI Snapshot omits the full AIS Plus harbour region list by default. Enable its harbour-list option only when debugging harbour geometry.
