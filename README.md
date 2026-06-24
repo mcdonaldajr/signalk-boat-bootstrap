@@ -2,6 +2,11 @@
 
 Scripts and notes for turning a freshly installed Raspberry Pi OS image into the Signal K/Watchkeeper boat setup.
 
+This repository is the private/coordinated SD-card installer for our boat Pi
+images. It is not intended to be copied into the future public AJRM Marine Suite
+GitHub organisation; normal Signal K users should install the individual apps
+from the Signal K AppStore once they are published.
+
 This repository intentionally does **not** install charts. Chart files are large and boat-specific, so copy or install those separately after the base system is working.
 
 ## What This Installs
