@@ -55,7 +55,7 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 | Watchkeeper Capture | `v0.1.14` |
 | Watchkeeper Voyage Viewer | `v0.1.13` |
 | Vessel Database | `v1.0.0` |
-| Harbour Editor | `v3.0.1` |
+| Harbour Editor | `v3.1.0` |
 | Pi Controller | `v1.2.0` |
 
 This set is the coordinated working baseline for the split Watchkeeper
