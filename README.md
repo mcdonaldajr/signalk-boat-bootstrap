@@ -57,7 +57,7 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 | Watchkeeper Instruments | `v1.2.2` |
 | AI Snapshot | `v0.2.1` |
 | Signal K Logger | `v1.2.3` |
-| Watchkeeper Capture | `v0.1.14` |
+| Watchkeeper Capture | `v0.1.25` |
 | Watchkeeper Voyage Viewer | `v0.1.13` |
 | Vessel Database | `v1.0.0` |
 | Harbour Editor | `v3.1.0` |
