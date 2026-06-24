@@ -52,7 +52,7 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 | Watchkeeper Console | `v0.3.15` |
 | Watchkeeper Notifications | `v1.0.4` |
 | Watchkeeper Alerts | `v0.1.1` |
-| Watchkeeper Audio | `v2.3.3` |
+| Watchkeeper Audio | `v2.3.16` |
 | Watchkeeper Instrument Alerts | `v1.0.2` |
 | Watchkeeper Instruments | `v1.2.2` |
 | AI Snapshot | `v0.2.1` |
@@ -61,7 +61,7 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 | Watchkeeper Voyage Viewer | `v0.1.13` |
 | Vessel Database | `v1.0.0` |
 | Harbour Editor | `v3.1.0` |
-| Pi Controller | `v1.2.0` |
+| Pi Controller | `v1.2.5` |
 
 This set is the coordinated working baseline for the split Watchkeeper
 architecture.
