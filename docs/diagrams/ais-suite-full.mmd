@@ -14,9 +14,9 @@ flowchart LR
   end
 
   subgraph Clients["User Interfaces"]
-    aisBrowser["AIS Plus browser\nchart, targets, profiles,\nsettings, optional browser speech"]
-    companion["AIS Plus Companion\nactive alerts, historical alerts,\nannouncements, controls, audio"]
-    watch["Apple Watch / small clients\ncompact alert feed + quick actions"]
+    console["Watchkeeper Console\nsystem controls and status"]
+    display["Watchkeeper Display\nchart, targets, profiles,\nsettings"]
+    alerts["Watchkeeper Alerts\ncrew alert viewer"]
   end
 
   subgraph Audio["Audio Output"]
@@ -31,16 +31,14 @@ flowchart LR
   end
 
   subgraph TestOps["Testing / Operations"]
-    vesselSim["Vessel Simulator\nsynthetic AIS targets"]
-    selfSim["Self Track Simulator\nsynthetic own-vessel track"]
+    watchkeeperSim["Watchkeeper Simulator\nown-vessel, targets, GPS,\nweather, depth, tide"]
     capturePlus["CapturePlus\ncapture, replay, clips"]
     aiSnapshot["AI Snapshot\ncompact ChatGPT/debug JSON"]
     piController["Pi Controller\nstatus / control sidecar"]
   end
 
   aisFeed --> signalK
-  vesselSim --> signalK
-  selfSim --> signalK
+  watchkeeperSim --> signalK
   capturePlus <--> signalK
   capturePlus -->|"publishes plugins.capturePlus.playback"| aisPlus
 
@@ -57,21 +55,21 @@ flowchart LR
   signalK -->|"Harbour:* regions"| harbourResources
   harbourResources -->|"auto Harbour/Coastal profile\nand harbour-limit display"| aisPlus
 
-  uiState --> aisBrowser
-  signalK -->|"chart resources + live vessel data"| aisBrowser
-  aisBrowser -->|"profile/settings/silence actions"| aisPlus
+  uiState --> display
+  signalK -->|"chart resources + live vessel data"| display
+  display -->|"profile/settings/silence actions"| aisPlus
 
-  signalK -->|"AIS Plus alert state,\nCompanion history, audio/setup state"| companion
-  companion -->|"silence/profile/sensitivity actions"| aisPlus
+  signalK -->|"Watchkeeper system state\nand plugin routes"| console
+  console -->|"profile/settings/silence actions"| aisPlus
 
-  signalK -->|"AIS Plus compact alert feed"| watch
-  watch -->|"quick actions"| aisPlus
+  signalK -->|"Notifications Plus projections\nand compact alert feed"| alerts
+  alerts -->|"quick actions"| aisPlus
 
   signalK -->|"selected Signal K state\nand plugin routes"| aiSnapshot
 
   aisPlus -->|"announcement events\nAIS Plus decides what is worth saying"| audioPlugin
   audioPlugin -->|"status at vessels.self.plugins.aisPlusAudio"| signalK
   audioPlugin --> generatedAudio
-  generatedAudio --> companion
+  generatedAudio --> alerts
   audioPlugin --> piSpeaker
   audioPlugin --> mp3Stream

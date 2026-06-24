@@ -23,18 +23,14 @@ Signal K plugins:
 - `signalk-notifications-plus`
 - `signalk-watchkeeper-alerts` (Watchkeeper Alerts, read-only crew viewer)
 - `signalk-ais-plus-audio`
-- `signalk-ais-plus-companion`
 - `signalk-audible-instruments`
 - `signalk-instruments-plus`
-- `signalk-ais-plus-apple-watch`
 - `signalk-ai-snapshot`
 - `signalk-capture-plus` (Signal K Logger)
 - `signalk-voyage-debugger` (Watchkeeper Capture)
 - `signalk-voyage-viewer` (Watchkeeper Voyage Viewer)
 - `signalk-vessel-database`
 - `signalk-harbour-editor`
-- `signalk-vessel-simulator`
-- `signalk-self-track-simulator`
 - `signalk-pi-controller`
 
 The script installs fixed, known-good tags by default. You can override any version with environment variables before running the script.
@@ -52,18 +48,14 @@ The default tags in this repository are kept as a coordinated Watchkeeper suite.
 | Watchkeeper Notifications | `v1.0.4` |
 | Watchkeeper Alerts | `v0.1.1` |
 | Watchkeeper Audio | `v2.3.3` |
-| Watchkeeper Companion (frozen fallback) | `v3.3.2` |
 | Watchkeeper Instrument Alerts | `v1.0.2` |
 | Watchkeeper Instruments | `v1.2.2` |
-| AIS Plus Apple Watch | `v1.0.1` |
 | AI Snapshot | `v0.2.1` |
 | Signal K Logger | `v1.2.3` |
 | Watchkeeper Capture | `v0.1.14` |
 | Watchkeeper Voyage Viewer | `v0.1.13` |
 | Vessel Database | `v1.0.0` |
 | Harbour Editor | `v3.0.1` |
-| Vessel Simulator | `v2.4.0` |
-| Self Track Simulator | `v1.2.2` |
 | Pi Controller | `v1.2.0` |
 
 This set is the coordinated working baseline for the split Watchkeeper
@@ -78,11 +70,10 @@ configured outside profile, normally Coastal.
 Watchkeeper Traffic owns AIS decisions. Watchkeeper Notifications brokers live
 cross-provider notifications. Watchkeeper Audio renders speech. Watchkeeper
 Alerts is the new read-only crew viewer for active alerts, recent activity, and
-local device/headphone audio. Watchkeeper Companion and the Apple Watch app
-remain installed as frozen fallbacks while Alerts replaces them. Watchkeeper
-Display owns the chart view, and Watchkeeper Console provides the sailing
-workspace. Watchkeeper Capture records voyage bundles, and Watchkeeper Voyage
-Viewer plots those bundles and exports GPX tracks.
+local device/headphone audio. Watchkeeper Display owns the chart view, and
+Watchkeeper Console provides the sailing workspace. Watchkeeper Capture records
+voyage bundles, and Watchkeeper Voyage Viewer plots those bundles and exports
+GPX tracks.
 
 ## Architecture Transition
 
@@ -283,26 +274,20 @@ Use `./update-ais-suite-latest.sh --main` only when you deliberately want the ne
    https://<your-pi-hostname>:3443/signalk-watchkeeper-alerts/
    ```
 
-6. Open Watchkeeper Companion only if you need the frozen fallback:
-
-   ```text
-   https://<your-pi-hostname>:3443/signalk-ais-plus-companion/
-   ```
-
-7. Open AI Snapshot when you need compact state for debugging or ChatGPT:
+6. Open AI Snapshot when you need compact state for debugging or ChatGPT:
 
    ```text
    https://<your-pi-hostname>:3443/signalk-ai-snapshot/
    ```
 
-8. Open Watchkeeper Voyage Viewer to map and export recorded voyage tracks:
+7. Open Watchkeeper Voyage Viewer to map and export recorded voyage tracks:
 
    ```text
    https://<your-pi-hostname>:3443/signalk-voyage-viewer/
    ```
 
-9. Add charts separately.
-10. Verify the Pi support services:
+8. Add charts separately.
+9. Verify the Pi support services:
 
    ```bash
    systemctl status log2ram --no-pager

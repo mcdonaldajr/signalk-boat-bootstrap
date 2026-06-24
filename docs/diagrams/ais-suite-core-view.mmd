@@ -1,16 +1,17 @@
 flowchart LR
   SignalK[("Signal K Server\nData API + plugin routes")]
 
-  AIS["AIS Plus\nalert brain + chart app"]
+  AIS["Watchkeeper Traffic\nalert brain"]
   DB["Vessel Database\nlearns static MMSI details"]
-  Audio["AIS Plus Audio\nPiper + directional pings + stream"]
-  Companion["AIS Plus Companion\nactive/history/announcements + controls"]
-  Watch["Apple Watch\ncompact alert feed"]
+  Audio["Watchkeeper Audio\nPiper + directional pings + stream"]
+  Display["Watchkeeper Display\nchart display"]
+  Console["Watchkeeper Console\ncontrols + status"]
+  Alerts["Watchkeeper Alerts\ncrew alert viewer"]
   Snapshot["AI Snapshot\ncompact support JSON"]
   Harbour["Harbour Editor\nedits Harbour:* regions"]
   Harbours[("signalk-harbours\ngit repo")]
   Capture["CapturePlus\ncapture / replay"]
-  Sim["Vessel Simulator\nsynthetic AIS targets"]
+  Sim["Watchkeeper Simulator\nown-vessel, targets,\nGPS and environment"]
 
   Sim --> SignalK
   Capture <--> SignalK
@@ -25,12 +26,14 @@ flowchart LR
   Harbour <--> Harbours
   SignalK -->|"harbour limits / auto profile"| AIS
 
-  AIS -->|"UI state, alerts, profile, silence"| Companion
-  Companion -->|"actions"| AIS
-  AIS -->|"compact alert feed"| Watch
-  Watch -->|"quick actions"| AIS
+  AIS -->|"UI state, alerts, profile, silence"| Display
+  Display -->|"actions"| AIS
+  SignalK -->|"system state + routes"| Console
+  Console -->|"actions"| AIS
+  SignalK -->|"alert projections"| Alerts
+  Alerts -->|"quick actions"| AIS
   SignalK -->|"selected state + plugin routes"| Snapshot
 
   AIS -->|"announcement events"| Audio
   Audio -->|"status"| SignalK
-  Audio -->|"Pi speaker / MP3 stream / rendered files"| Companion
+  Audio -->|"Pi speaker / MP3 stream / rendered files"| Alerts
