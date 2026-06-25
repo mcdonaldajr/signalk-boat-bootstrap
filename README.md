@@ -71,7 +71,7 @@ suite. The current defaults install:
 | AJRM Marine Pi Controller | `v0.5.0` |
 | AJRM Marine GPS Integrity | `v0.5.0` |
 | AJRM Marine DR Plotter | `v0.5.0` |
-| AJRM Marine Simulator | `v0.5.0` |
+| AJRM Marine Simulator | `v0.5.1` |
 
 This set is the coordinated working baseline for the split architecture that
 will become the public AJRM Marine Suite.
