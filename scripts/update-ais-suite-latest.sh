@@ -25,6 +25,9 @@ PLUGINS=(
   signalk-vessel-database
   signalk-harbour-editor
   signalk-pi-controller
+  signalk-gps-integrity
+  signalk-dr-plotter
+  signalk-watchkeeper-simulator
 )
 
 usage() {

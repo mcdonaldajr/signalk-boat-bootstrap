@@ -1,6 +1,7 @@
-# Watchkeeper Boat Bootstrap
+# AJRM Marine Boat Bootstrap
 
-Scripts and notes for turning a freshly installed Raspberry Pi OS image into the Signal K/Watchkeeper boat setup.
+Scripts and notes for turning a freshly installed Raspberry Pi OS image into
+Anthony's private Signal K/AJRM Marine boat setup.
 
 This repository is the private/coordinated SD-card installer for our boat Pi
 images. It is not intended to be copied into the future public AJRM Marine Suite
@@ -11,7 +12,9 @@ This repository intentionally does **not** install charts. Chart files are large
 
 ## What This Installs
 
-The bootstrap script installs Raspberry Pi OS packages used by the Watchkeeper suite, Pi support services, Piper speech support, and the Signal K plugins we use.
+The bootstrap script installs Raspberry Pi OS packages used by the current
+private AJRM Marine test suite, Pi support services, Piper speech support, and
+the Signal K plugins we use.
 
 Support services:
 
@@ -37,34 +40,41 @@ Signal K plugins:
 - `signalk-vessel-database`
 - `signalk-harbour-editor`
 - `signalk-pi-controller`
+- `signalk-gps-integrity` (Watchkeeper GPS Integrity)
+- `signalk-dr-plotter` (Watchkeeper DR Plotter)
+- `signalk-watchkeeper-simulator` (Watchkeeper Simulator)
 
 The script installs fixed, known-good tags by default. You can override any version with environment variables before running the script.
 
 ## Suite Release Tags
 
-The default tags in this repository are kept as a coordinated Watchkeeper suite. The current defaults install:
+The default tags in this repository are kept as a coordinated private test
+suite. The current defaults install:
 
 | Component | Default tag |
 | --- | --- |
 | Signal K Resources Provider | `1.5.1` |
-| Watchkeeper Traffic | `v0.8.3` |
-| Watchkeeper Display | `v2.2.13` |
-| Watchkeeper Console | `v0.3.15` |
-| Watchkeeper Notifications | `v1.0.4` |
-| Watchkeeper Alerts | `v0.1.1` |
-| Watchkeeper Audio | `v2.3.17` |
-| Watchkeeper Instrument Alerts | `v1.0.2` |
+| Watchkeeper Traffic | `v0.8.21` |
+| Watchkeeper Display | `v2.2.14` |
+| Watchkeeper Console | `v0.3.17` |
+| Watchkeeper Notifications | `v1.0.9` |
+| Watchkeeper Alerts | `v0.1.5` |
+| Watchkeeper Audio | `v2.3.18` |
+| Watchkeeper Instrument Alerts | `v1.0.3` |
 | Watchkeeper Instruments | `v1.2.2` |
-| AI Snapshot | `v0.2.1` |
-| Signal K Logger | `v1.2.3` |
-| Watchkeeper Capture | `v0.1.25` |
-| Watchkeeper Voyage Viewer | `v0.1.13` |
-| Vessel Database | `v1.0.0` |
-| Harbour Editor | `v3.1.0` |
+| AI Snapshot | `v0.2.5` |
+| Signal K Logger | `v1.2.7` |
+| Watchkeeper Capture | `v0.1.31` |
+| Watchkeeper Voyage Viewer | `v0.1.17` |
+| Vessel Database | `v1.0.1` |
+| Harbour Editor | `v3.1.1` |
 | Pi Controller | `v1.2.5` |
+| Watchkeeper GPS Integrity | `v0.1.19` |
+| Watchkeeper DR Plotter | `v0.1.8` |
+| Watchkeeper Simulator | `v0.1.11` |
 
-This set is the coordinated working baseline for the split Watchkeeper
-architecture.
+This set is the coordinated working baseline for the split architecture that
+will become the public AJRM Marine Suite.
 
 `@signalk/resources-provider` is a required Signal K baseline dependency for
 Watchkeeper Auto Profile. Watchkeeper Traffic reads `Harbour:` region resources
@@ -72,13 +82,13 @@ through Signal K's resources API; if the provider is disabled or missing, Traffi
 cannot see harbour limits after a reboot and Auto Profile falls back to the
 configured outside profile, normally Coastal.
 
-Watchkeeper Traffic owns AIS decisions. Watchkeeper Notifications brokers live
-cross-provider notifications. Watchkeeper Audio renders speech. Watchkeeper
-Alerts is the new read-only crew viewer for active alerts, recent activity, and
-local device/headphone audio. Watchkeeper Display owns the chart view, and
-Watchkeeper Console provides the sailing workspace. Watchkeeper Capture records
-voyage bundles, and Watchkeeper Voyage Viewer plots those bundles and exports
-GPX tracks.
+Traffic owns AIS decisions. Notifications brokers live cross-provider
+notifications. Audio renders speech. Alerts is the read-only crew viewer for
+active alerts, recent activity, and local device/headphone audio. Display owns
+the main chart view, and Console provides the sailing workspace. Capture records
+voyage bundles, Voyage Viewer plots those bundles and exports GPX tracks, and
+GPS Integrity/DR Plotter provide own-vessel GPS integrity and dead-reckoning
+tools.
 
 ## Architecture Transition
 
@@ -231,10 +241,10 @@ Useful options:
 Useful environment overrides:
 
 ```bash
-WATCHKEEPER_TRAFFIC_VERSION=v0.8.3 ./scripts/install-ais-suite.sh
+WATCHKEEPER_TRAFFIC_VERSION=v0.8.21 ./scripts/install-ais-suite.sh
 RESOURCES_PROVIDER_VERSION=1.5.1 ./scripts/install-ais-suite.sh
-AI_SNAPSHOT_VERSION=v0.2.1 ./scripts/install-ais-suite.sh
-VOYAGE_VIEWER_VERSION=v0.1.13 ./scripts/install-ais-suite.sh
+AI_SNAPSHOT_VERSION=v0.2.5 ./scripts/install-ais-suite.sh
+VOYAGE_VIEWER_VERSION=v0.1.17 ./scripts/install-ais-suite.sh
 REPO_OWNER=mcdonaldajr ./scripts/install-ais-suite.sh
 SIGNALK_HOME=/home/pi/.signalk ./scripts/install-ais-suite.sh
 POWERDOWN_INSTALL_DIR=/opt/powerDown ./scripts/install-ais-suite.sh
