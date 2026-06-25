@@ -30,7 +30,7 @@ AJRM_MARINE_GPS_INTEGRITY_VERSION="${AJRM_MARINE_GPS_INTEGRITY_VERSION:-v0.5.0}"
 AJRM_MARINE_DR_PLOTTER_VERSION="${AJRM_MARINE_DR_PLOTTER_VERSION:-v0.5.0}"
 AJRM_MARINE_SIMULATOR_VERSION="${AJRM_MARINE_SIMULATOR_VERSION:-v0.5.0}"
 
-PIPER_VERSION="${PIPER_VERSION:-v1.2.0}"
+PIPER_VERSION="${PIPER_VERSION:-2023.11.14-2}"
 PIPER_DIR="${PIPER_DIR:-/opt/piper}"
 PIPER_VOICES_DIR="${PIPER_VOICES_DIR:-$HOME/piper-voices}"
 PIPER_VOICE="${PIPER_VOICE:-en_GB-alan-medium}"
@@ -219,19 +219,37 @@ install_piper() {
   local arch
   arch="$(uname -m)"
 
+  local piper_assets=()
   case "$arch" in
     aarch64|arm64)
-      local piper_asset="piper_linux_aarch64.tar.gz"
+      piper_assets=("piper_linux_aarch64.tar.gz" "piper_arm64.tar.gz")
+      ;;
+    armv7l)
+      piper_assets=("piper_linux_armv7l.tar.gz" "piper_armv7.tar.gz")
+      ;;
+    x86_64|amd64)
+      piper_assets=("piper_linux_x86_64.tar.gz" "piper_amd64.tar.gz")
       ;;
     *)
-      warn "Automatic Piper binary install is only configured for 64-bit Raspberry Pi OS. Skipping Piper for architecture: $arch"
+      warn "Automatic Piper binary install is not configured for architecture: $arch"
       return
       ;;
   esac
 
   local tmp
   tmp="$(mktemp -d)"
-  curl -fsSL "https://github.com/rhasspy/piper/releases/download/${PIPER_VERSION}/${piper_asset}" -o "$tmp/piper.tar.gz"
+  local piper_url=""
+  for piper_asset in "${piper_assets[@]}"; do
+    piper_url="https://github.com/rhasspy/piper/releases/download/${PIPER_VERSION}/${piper_asset}"
+    if curl -fsSL "$piper_url" -o "$tmp/piper.tar.gz"; then
+      break
+    fi
+    piper_url=""
+  done
+  if [[ -z "$piper_url" ]]; then
+    rm -rf "$tmp"
+    die "Could not download a Piper binary for $arch from release $PIPER_VERSION"
+  fi
   sudo mkdir -p "$PIPER_DIR"
   sudo tar -xzf "$tmp/piper.tar.gz" -C "$PIPER_DIR" --strip-components=1
   sudo ln -sf "$PIPER_DIR/piper" /usr/local/bin/piper
