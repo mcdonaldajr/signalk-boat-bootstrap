@@ -70,7 +70,7 @@ suite. The current defaults install:
 | Harbour Editor | `v3.1.1` |
 | Pi Controller | `v1.2.5` |
 | Watchkeeper GPS Integrity | `v0.1.19` |
-| Watchkeeper DR Plotter | `v0.1.8` |
+| Watchkeeper DR Plotter | `v0.1.9` |
 | Watchkeeper Simulator | `v0.1.11` |
 
 This set is the coordinated working baseline for the split architecture that
