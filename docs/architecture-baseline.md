@@ -11,7 +11,7 @@ The bootstrap installs the public-beta AJRM Marine Suite applications:
 | `@signalk/resources-provider` | `1.5.1` | Standard Signal K resources API provider; required for `Harbour:` regions used by AJRM Marine Auto Profile |
 | `signalk-ajrm-marine-traffic` | `v0.5.0` | AJRM Marine Traffic; authoritative AIS decisions and notifications |
 | `signalk-ajrm-marine-display` | `v0.5.0` | AJRM Marine Display; chart, targets, and alert view |
-| `signalk-ajrm-marine-console` | `v0.5.1` | AJRM Marine Console; sailing workspace shell |
+| `signalk-ajrm-marine-console` | `v0.5.2` | AJRM Marine Console; sailing workspace shell |
 | `signalk-ajrm-marine-notifications` | `v0.5.0` | AJRM Marine Notifications; live cross-provider notification broker and diagnostics webapp |
 | `signalk-ajrm-marine-alerts` | `v0.5.0` | AJRM Marine Alerts; read-only crew alert viewer |
 | `signalk-ajrm-marine-audio` | `v0.5.2` | AJRM Marine Audio; speech rendering, queue, Pi speaker, and stream |
