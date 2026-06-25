@@ -25,7 +25,7 @@ The bootstrap installs the public-beta AJRM Marine Suite applications:
 | `signalk-ajrm-marine-pi-controller` | `v0.5.0` | AJRM Marine Pi Controller; Pi control and shutdown intent handling |
 | `signalk-ajrm-marine-gps-integrity` | `v0.5.0` | AJRM Marine GPS Integrity; GNSS health and DR projections |
 | `signalk-ajrm-marine-dr-plotter` | `v0.5.0` | AJRM Marine DR Plotter; dead-reckoning chart plotter |
-| `signalk-ajrm-marine-simulator` | `v0.5.1` | AJRM Marine Simulator; own-vessel, environment, and AIS target simulator |
+| `signalk-ajrm-marine-simulator` | `v0.5.2` | AJRM Marine Simulator; own-vessel, environment, and AIS target simulator |
 
 `@signalk/resources-provider` must remain enabled on the boat profile. Harbour
 Editor writes `Harbour:` region resources through it, and AJRM Marine Traffic
