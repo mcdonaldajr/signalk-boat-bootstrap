@@ -25,24 +25,24 @@ Support services:
 Signal K plugins:
 
 - `@signalk/resources-provider` (standard Signal K resource storage used for harbour regions, charts, routes, and notes)
-- `signalk-ais-plus-engine` (Watchkeeper Traffic)
-- `signalk-ais-plus-display` (Watchkeeper Display)
-- `signalk-ais-plus-console` (Watchkeeper Console)
-- `signalk-notifications-plus`
-- `signalk-watchkeeper-alerts` (Watchkeeper Alerts, read-only crew viewer)
-- `signalk-ais-plus-audio`
-- `signalk-audible-instruments`
-- `signalk-instruments-plus`
-- `signalk-ai-snapshot`
-- `signalk-capture-plus` (Signal K Logger)
-- `signalk-voyage-debugger` (Watchkeeper Capture)
-- `signalk-voyage-viewer` (Watchkeeper Voyage Viewer)
-- `signalk-vessel-database`
-- `signalk-harbour-editor`
-- `signalk-pi-controller`
-- `signalk-gps-integrity` (Watchkeeper GPS Integrity)
-- `signalk-dr-plotter` (Watchkeeper DR Plotter)
-- `signalk-watchkeeper-simulator` (Watchkeeper Simulator)
+- `signalk-ajrm-marine-traffic` (AJRM Marine Traffic)
+- `signalk-ajrm-marine-display` (AJRM Marine Display)
+- `signalk-ajrm-marine-console` (AJRM Marine Console)
+- `signalk-ajrm-marine-notifications` (AJRM Marine Notifications)
+- `signalk-ajrm-marine-alerts` (AJRM Marine Alerts, read-only crew viewer)
+- `signalk-ajrm-marine-audio` (AJRM Marine Audio)
+- `signalk-ajrm-marine-instrument-alerts` (AJRM Marine Instrument Alerts)
+- `signalk-ajrm-marine-instruments` (AJRM Marine Instruments)
+- `signalk-ajrm-marine-snapshot` (AJRM Marine Snapshot)
+- `signalk-ajrm-marine-logger` (AJRM Marine Logger)
+- `signalk-ajrm-marine-capture` (AJRM Marine Capture)
+- `signalk-ajrm-marine-voyage-viewer` (AJRM Marine Voyage Viewer)
+- `signalk-ajrm-marine-vessel-database` (AJRM Marine Vessel Database)
+- `signalk-ajrm-marine-harbour-editor` (AJRM Marine Harbour Editor)
+- `signalk-ajrm-marine-pi-controller` (AJRM Marine Pi Controller)
+- `signalk-ajrm-marine-gps-integrity` (AJRM Marine GPS Integrity)
+- `signalk-ajrm-marine-dr-plotter` (AJRM Marine DR Plotter)
+- `signalk-ajrm-marine-simulator` (AJRM Marine Simulator)
 
 The script installs fixed, known-good tags by default. You can override any version with environment variables before running the script.
 
@@ -54,30 +54,30 @@ suite. The current defaults install:
 | Component | Default tag |
 | --- | --- |
 | Signal K Resources Provider | `1.5.1` |
-| Watchkeeper Traffic | `v0.8.21` |
-| Watchkeeper Display | `v2.2.14` |
-| Watchkeeper Console | `v0.3.17` |
-| Watchkeeper Notifications | `v1.0.9` |
-| Watchkeeper Alerts | `v0.1.5` |
-| Watchkeeper Audio | `v2.3.18` |
-| Watchkeeper Instrument Alerts | `v1.0.3` |
-| Watchkeeper Instruments | `v1.2.2` |
-| AI Snapshot | `v0.2.5` |
-| Signal K Logger | `v1.2.7` |
-| Watchkeeper Capture | `v0.1.31` |
-| Watchkeeper Voyage Viewer | `v0.1.17` |
-| Vessel Database | `v1.0.1` |
-| Harbour Editor | `v3.1.1` |
-| Pi Controller | `v1.2.5` |
-| Watchkeeper GPS Integrity | `v0.1.19` |
-| Watchkeeper DR Plotter | `v0.1.9` |
-| Watchkeeper Simulator | `v0.1.11` |
+| AJRM Marine Traffic | `v0.5.0` |
+| AJRM Marine Display | `v0.5.0` |
+| AJRM Marine Console | `v0.5.0` |
+| AJRM Marine Notifications | `v0.5.0` |
+| AJRM Marine Alerts | `v0.5.0` |
+| AJRM Marine Audio | `v0.5.0` |
+| AJRM Marine Instrument Alerts | `v0.5.0` |
+| AJRM Marine Instruments | `v0.5.0` |
+| AJRM Marine Snapshot | `v0.5.0` |
+| AJRM Marine Logger | `v0.5.0` |
+| AJRM Marine Capture | `v0.5.0` |
+| AJRM Marine Voyage Viewer | `v0.5.0` |
+| AJRM Marine Vessel Database | `v0.5.0` |
+| AJRM Marine Harbour Editor | `v0.5.0` |
+| AJRM Marine Pi Controller | `v0.5.0` |
+| AJRM Marine GPS Integrity | `v0.5.0` |
+| AJRM Marine DR Plotter | `v0.5.0` |
+| AJRM Marine Simulator | `v0.5.0` |
 
 This set is the coordinated working baseline for the split architecture that
 will become the public AJRM Marine Suite.
 
 `@signalk/resources-provider` is a required Signal K baseline dependency for
-Watchkeeper Auto Profile. Watchkeeper Traffic reads `Harbour:` region resources
+AJRM Marine Auto Profile. AJRM Marine Traffic reads `Harbour:` region resources
 through Signal K's resources API; if the provider is disabled or missing, Traffic
 cannot see harbour limits after a reboot and Auto Profile falls back to the
 configured outside profile, normally Coastal.
@@ -92,29 +92,22 @@ tools.
 
 ## Architecture Transition
 
-The simulator migration to the split architecture is complete. Bootstrap now
-installs the split Watchkeeper components only. During the naming migration, npm
-package names, plugin ids, and Signal K paths intentionally keep their existing
-`signalk-*` / `aisPlus*` compatibility names; the full package rename is planned
-for the fresh SD-card install window.
-
-Suite architecture, Signal K integration rules, and observability requirements
-are maintained in the private
-[`ais-plus-architecture`](https://github.com/mcdonaldajr/ais-plus-architecture)
-repository.
+The public-beta rename is complete. Bootstrap now installs the clean-history
+`signalk-ajrm-marine-*` packages from the public `ajrm-marine-suite`
+organisation.
 
 See [Architecture Baseline](docs/architecture-baseline.md) for the repository
 roles and release policy.
 
 ## Suite Diagrams
 
-High-resolution diagrams showing how the Watchkeeper suite plugins interact are in [docs/diagrams](docs/diagrams/README.md). The folder includes PNG exports for Pages/documents and the Mermaid source files used to generate them.
+High-resolution diagrams showing how the AJRM Marine Suite plugins interact are in [docs/diagrams](docs/diagrams/README.md). The folder includes PNG exports for Pages/documents and the Mermaid source files used to generate them.
 
 ## Start With Signal K
 
-Run the official Signal K installation first. Watchkeeper Bootstrap does not
+Run the official Signal K installation first. AJRM Marine Bootstrap does not
 install Node.js, npm, or Signal K Server; it checks the already-installed
-runtime before installing the Watchkeeper apps.
+runtime before installing the AJRM Marine apps.
 
 For a fresh Raspberry Pi card, use the current Signal K recommendation:
 Node.js 24.x with npm 11 or later. Current Signal K Server releases require
@@ -135,13 +128,13 @@ Follow the official Signal K documentation for the current install steps:
 - [Signal K Raspberry Pi installation](https://demo.signalk.org/documentation/installation/raspberry_pi_installation.html)
 - [Signal K installation overview](https://signalk.org/installation)
 
-Only run the Watchkeeper bootstrap after `signalk-server-setup` has created `~/.signalk`.
+Only run the AJRM Marine bootstrap after `signalk-server-setup` has created `~/.signalk`.
 The Bootstrap installer fails fast on Node.js older than 22, warns on Node.js
 22/23, and prints the detected Node.js/npm versions at startup.
 
-The bootstrap installs GitHub CLI (`gh`) via `apt` because several private
-Watchkeeper release/install commands use `gh release download` to fetch tagged
-`.tgz` assets. If you run with `--no-system-packages`, install it manually:
+The bootstrap installs GitHub CLI (`gh`) via `apt` for manual release checks and
+future private forks. If you run with `--no-system-packages`, install it
+manually:
 
 ```bash
 sudo apt-get update
@@ -155,9 +148,9 @@ If all plugin repositories are public, no token is needed. If any plugin reposit
 Recommended token setup:
 
 1. Open [GitHub's new fine-grained token page](https://github.com/settings/personal-access-tokens/new).
-2. Set **Token name** to `Pi Watchkeeper updater`.
+2. Set **Token name** to `Pi AJRM Marine updater`.
 3. Set **Expiration** to a short expiry, for example 30 or 90 days.
-4. Under **Repository access**, choose the Watchkeeper plugin repositories, or choose all repositories if that is easier.
+4. Under **Repository access**, choose the AJRM Marine plugin repositories, or choose all repositories if that is easier.
 5. Under **Permissions > Repository permissions > Contents**, choose **Read-only**.
 6. Generate the token and copy it immediately.
 
@@ -172,7 +165,7 @@ export GITHUB_TOKEN
 The installer writes the token to a temporary `.netrc` file so `npm` and `git` can read private GitHub repositories. It removes the temporary file when the install finishes.
 
 GitHub CLI release downloads need their own authentication as well. If you use
-manual commands such as `gh release download` against private Watchkeeper repos,
+manual commands such as `gh release download` against private AJRM Marine repos,
 either export the same token as `GH_TOKEN` for that shell:
 
 ```bash
@@ -241,11 +234,11 @@ Useful options:
 Useful environment overrides:
 
 ```bash
-WATCHKEEPER_TRAFFIC_VERSION=v0.8.21 ./scripts/install-ais-suite.sh
+AJRM_MARINE_TRAFFIC_VERSION=v0.5.0 ./scripts/install-ais-suite.sh
 RESOURCES_PROVIDER_VERSION=1.5.1 ./scripts/install-ais-suite.sh
-AI_SNAPSHOT_VERSION=v0.2.5 ./scripts/install-ais-suite.sh
-VOYAGE_VIEWER_VERSION=v0.1.17 ./scripts/install-ais-suite.sh
-REPO_OWNER=mcdonaldajr ./scripts/install-ais-suite.sh
+AJRM_MARINE_SNAPSHOT_VERSION=v0.5.0 ./scripts/install-ais-suite.sh
+AJRM_MARINE_VOYAGE_VIEWER_VERSION=v0.5.0 ./scripts/install-ais-suite.sh
+SUITE_REPO_OWNER=ajrm-marine-suite ./scripts/install-ais-suite.sh
 SIGNALK_HOME=/home/pi/.signalk ./scripts/install-ais-suite.sh
 POWERDOWN_INSTALL_DIR=/opt/powerDown ./scripts/install-ais-suite.sh
 ```
@@ -264,9 +257,9 @@ chmod +x update-ais-suite-latest.sh
 unset GITHUB_TOKEN
 ```
 
-The updater writes `GITHUB_TOKEN` to a temporary `.netrc` file so `git` and `npm` can authenticate to private GitHub repositories. It restores any existing `.netrc` when the update finishes.
+The updater writes `GITHUB_TOKEN` to a temporary `.netrc` file when supplied so `git` and `npm` can authenticate. It restores any existing `.netrc` when the update finishes.
 
-If you need to create the token first, open [GitHub's new fine-grained token page](https://github.com/settings/personal-access-tokens/new), name it `Pi Watchkeeper updater`, set an expiry such as 30 or 90 days, grant repository **Contents: Read-only**, generate it, and paste it into the Pi prompt.
+If you need to create the token first, open [GitHub's new fine-grained token page](https://github.com/settings/personal-access-tokens/new), name it `Pi AJRM Marine updater`, set an expiry such as 30 or 90 days, grant repository **Contents: Read-only**, generate it, and paste it into the Pi prompt.
 
 Use `./update-ais-suite-latest.sh --main` only when you deliberately want the newest main-branch code rather than the latest release tags.
 
@@ -275,30 +268,30 @@ Use `./update-ais-suite-latest.sh --main` only when you deliberately want the ne
 1. Open the Signal K Admin UI.
 2. Log in as admin.
 3. Enable and configure the installed plugins if Signal K has not enabled them automatically.
-   Keep `@signalk/resources-provider` enabled if you use Watchkeeper harbour
+   Keep `@signalk/resources-provider` enabled if you use AJRM Marine harbour
    limits, Auto Profile, charts, routes, or notes.
-4. Open Watchkeeper Console:
+4. Open AJRM Marine Console:
 
    ```text
-   https://<your-pi-hostname>:3443/signalk-ais-plus-console/
+   https://<your-pi-hostname>:3443/signalk-ajrm-marine-console/
    ```
 
-5. Open Watchkeeper Alerts for a read-only crew alert viewer:
+5. Open AJRM Marine Alerts for a read-only crew alert viewer:
 
    ```text
-   https://<your-pi-hostname>:3443/signalk-watchkeeper-alerts/
+   https://<your-pi-hostname>:3443/signalk-ajrm-marine-alerts/
    ```
 
-6. Open AI Snapshot when you need compact state for debugging or ChatGPT:
+6. Open AJRM Marine Snapshot when you need compact state for debugging or ChatGPT:
 
    ```text
-   https://<your-pi-hostname>:3443/signalk-ai-snapshot/
+   https://<your-pi-hostname>:3443/signalk-ajrm-marine-snapshot/
    ```
 
-7. Open Watchkeeper Voyage Viewer to map and export recorded voyage tracks:
+7. Open AJRM Marine Voyage Viewer to map and export recorded voyage tracks:
 
    ```text
-   https://<your-pi-hostname>:3443/signalk-voyage-viewer/
+   https://<your-pi-hostname>:3443/signalk-ajrm-marine-voyage-viewer/
    ```
 
 8. Add charts separately.
@@ -314,10 +307,10 @@ Use `./update-ais-suite-latest.sh --main` only when you deliberately want the ne
 
 - The script should be run as the normal Pi user, not with `sudo`.
 - The script uses `sudo` internally for operating-system packages, log2ram, powerDown, `/opt/piper`, and restarting Signal K.
-- log2ram keeps normal system logs in RAM and syncs them back according to its own defaults. Signal K Logger and Watchkeeper Capture files are intentionally kept on disk under `~/CapturePlusLogs`.
+- log2ram keeps normal system logs in RAM and syncs them back according to its own defaults. AJRM Marine Logger and AJRM Marine Capture files are intentionally kept on disk under `~/CapturePlusLogs`.
 - powerDown defaults to BCM GPIO 24, matching the `mcdonaldajr/powerDown` repository. Use `--no-powerdown` if the UPS shutdown signal is not fitted.
 - Piper is installed automatically on 64-bit Raspberry Pi OS. Other architectures are skipped with a warning.
-- GitHub CLI (`gh`) is installed by the default system package step. It is useful for authenticated release downloads from private Watchkeeper repositories.
+- GitHub CLI (`gh`) is installed by the default system package step. It is useful for authenticated release downloads from private AJRM Marine forks.
 - The default Piper voice is `en_GB-alan-medium`, installed into `~/piper-voices`.
 - Signal K Logger directories are created at `~/CapturePlusLogs/buffer`, `~/CapturePlusLogs/captures`, `~/CapturePlusLogs/clips`, and `~/CapturePlusLogs/voyages`.
-- AI Snapshot omits the full AIS Plus harbour region list by default. Enable its harbour-list option only when debugging harbour geometry.
+- AJRM Marine Snapshot omits the full harbour region list by default. Enable its harbour-list option only when debugging harbour geometry.

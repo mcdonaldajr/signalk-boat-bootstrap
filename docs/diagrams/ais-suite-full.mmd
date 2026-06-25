@@ -14,9 +14,9 @@ flowchart LR
   end
 
   subgraph Clients["User Interfaces"]
-    console["Watchkeeper Console\nsystem controls and status"]
-    display["Watchkeeper Display\nchart, targets, profiles,\nsettings"]
-    alerts["Watchkeeper Alerts\ncrew alert viewer"]
+    console["AJRM Marine Console\nsystem controls and status"]
+    display["AJRM Marine Display\nchart, targets, profiles,\nsettings"]
+    alerts["AJRM Marine Alerts\ncrew alert viewer"]
   end
 
   subgraph Audio["Audio Output"]
@@ -31,7 +31,7 @@ flowchart LR
   end
 
   subgraph TestOps["Testing / Operations"]
-    watchkeeperSim["Watchkeeper Simulator\nown-vessel, targets, GPS,\nweather, depth, tide"]
+    watchkeeperSim["AJRM Marine Simulator\nown-vessel, targets, GPS,\nweather, depth, tide"]
     capturePlus["CapturePlus\ncapture, replay, clips"]
     aiSnapshot["AI Snapshot\ncompact ChatGPT/debug JSON"]
     piController["Pi Controller\nstatus / control sidecar"]
@@ -59,7 +59,7 @@ flowchart LR
   signalK -->|"chart resources + live vessel data"| display
   display -->|"profile/settings/silence actions"| aisPlus
 
-  signalK -->|"Watchkeeper system state\nand plugin routes"| console
+  signalK -->|"AJRM Marine system state\nand plugin routes"| console
   console -->|"profile/settings/silence actions"| aisPlus
 
   signalK -->|"Notifications Plus projections\nand compact alert feed"| alerts

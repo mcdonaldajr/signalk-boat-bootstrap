@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 
 SCRIPT_NAME="$(basename "$0")"
-REPO_OWNER="${REPO_OWNER:-mcdonaldajr}"
+SUITE_REPO_OWNER="${SUITE_REPO_OWNER:-${REPO_OWNER:-ajrm-marine-suite}}"
 SIGNALK_HOME="${SIGNALK_HOME:-$HOME/.signalk}"
 INSTALL_PIPER="${INSTALL_PIPER:-1}"
 INSTALL_SYSTEM_PACKAGES="${INSTALL_SYSTEM_PACKAGES:-1}"
@@ -11,24 +11,24 @@ INSTALL_POWERDOWN="${INSTALL_POWERDOWN:-1}"
 RESTART_SIGNALK="${RESTART_SIGNALK:-1}"
 
 RESOURCES_PROVIDER_VERSION="${RESOURCES_PROVIDER_VERSION:-1.5.1}"
-WATCHKEEPER_TRAFFIC_VERSION="${WATCHKEEPER_TRAFFIC_VERSION:-v0.8.21}"
-WATCHKEEPER_DISPLAY_VERSION="${WATCHKEEPER_DISPLAY_VERSION:-v2.2.14}"
-WATCHKEEPER_CONSOLE_VERSION="${WATCHKEEPER_CONSOLE_VERSION:-v0.3.17}"
-NOTIFICATIONS_PLUS_VERSION="${NOTIFICATIONS_PLUS_VERSION:-v1.0.9}"
-WATCHKEEPER_ALERTS_VERSION="${WATCHKEEPER_ALERTS_VERSION:-v0.1.5}"
-AIS_PLUS_AUDIO_VERSION="${AIS_PLUS_AUDIO_VERSION:-v2.3.18}"
-AUDIBLE_INSTRUMENTS_VERSION="${AUDIBLE_INSTRUMENTS_VERSION:-v1.0.3}"
-INSTRUMENTS_PLUS_VERSION="${INSTRUMENTS_PLUS_VERSION:-v1.2.2}"
-AI_SNAPSHOT_VERSION="${AI_SNAPSHOT_VERSION:-v0.2.5}"
-CAPTURE_PLUS_VERSION="${CAPTURE_PLUS_VERSION:-v1.2.7}"
-VOYAGE_CAPTURE_VERSION="${VOYAGE_CAPTURE_VERSION:-v0.1.31}"
-VOYAGE_VIEWER_VERSION="${VOYAGE_VIEWER_VERSION:-v0.1.17}"
-VESSEL_DATABASE_VERSION="${VESSEL_DATABASE_VERSION:-v1.0.1}"
-HARBOUR_EDITOR_VERSION="${HARBOUR_EDITOR_VERSION:-v3.1.1}"
-PI_CONTROLLER_VERSION="${PI_CONTROLLER_VERSION:-v1.2.5}"
-GPS_INTEGRITY_VERSION="${GPS_INTEGRITY_VERSION:-v0.1.19}"
-DR_PLOTTER_VERSION="${DR_PLOTTER_VERSION:-v0.1.9}"
-WATCHKEEPER_SIMULATOR_VERSION="${WATCHKEEPER_SIMULATOR_VERSION:-v0.1.11}"
+AJRM_MARINE_TRAFFIC_VERSION="${AJRM_MARINE_TRAFFIC_VERSION:-v0.5.0}"
+AJRM_MARINE_DISPLAY_VERSION="${AJRM_MARINE_DISPLAY_VERSION:-v0.5.0}"
+AJRM_MARINE_CONSOLE_VERSION="${AJRM_MARINE_CONSOLE_VERSION:-v0.5.0}"
+AJRM_MARINE_NOTIFICATIONS_VERSION="${AJRM_MARINE_NOTIFICATIONS_VERSION:-v0.5.0}"
+AJRM_MARINE_ALERTS_VERSION="${AJRM_MARINE_ALERTS_VERSION:-v0.5.0}"
+AJRM_MARINE_AUDIO_VERSION="${AJRM_MARINE_AUDIO_VERSION:-v0.5.0}"
+AJRM_MARINE_INSTRUMENT_ALERTS_VERSION="${AJRM_MARINE_INSTRUMENT_ALERTS_VERSION:-v0.5.0}"
+AJRM_MARINE_INSTRUMENTS_VERSION="${AJRM_MARINE_INSTRUMENTS_VERSION:-v0.5.0}"
+AJRM_MARINE_SNAPSHOT_VERSION="${AJRM_MARINE_SNAPSHOT_VERSION:-v0.5.0}"
+AJRM_MARINE_LOGGER_VERSION="${AJRM_MARINE_LOGGER_VERSION:-v0.5.0}"
+AJRM_MARINE_CAPTURE_VERSION="${AJRM_MARINE_CAPTURE_VERSION:-v0.5.0}"
+AJRM_MARINE_VOYAGE_VIEWER_VERSION="${AJRM_MARINE_VOYAGE_VIEWER_VERSION:-v0.5.0}"
+AJRM_MARINE_VESSEL_DATABASE_VERSION="${AJRM_MARINE_VESSEL_DATABASE_VERSION:-v0.5.0}"
+AJRM_MARINE_HARBOUR_EDITOR_VERSION="${AJRM_MARINE_HARBOUR_EDITOR_VERSION:-v0.5.0}"
+AJRM_MARINE_PI_CONTROLLER_VERSION="${AJRM_MARINE_PI_CONTROLLER_VERSION:-v0.5.0}"
+AJRM_MARINE_GPS_INTEGRITY_VERSION="${AJRM_MARINE_GPS_INTEGRITY_VERSION:-v0.5.0}"
+AJRM_MARINE_DR_PLOTTER_VERSION="${AJRM_MARINE_DR_PLOTTER_VERSION:-v0.5.0}"
+AJRM_MARINE_SIMULATOR_VERSION="${AJRM_MARINE_SIMULATOR_VERSION:-v0.5.0}"
 
 PIPER_VERSION="${PIPER_VERSION:-v1.2.0}"
 PIPER_DIR="${PIPER_DIR:-/opt/piper}"
@@ -36,7 +36,7 @@ PIPER_VOICES_DIR="${PIPER_VOICES_DIR:-$HOME/piper-voices}"
 PIPER_VOICE="${PIPER_VOICE:-en_GB-alan-medium}"
 LOG2RAM_REPO="${LOG2RAM_REPO:-https://github.com/azlux/log2ram.git}"
 LOG2RAM_REF="${LOG2RAM_REF:-master}"
-POWERDOWN_REPO="${POWERDOWN_REPO:-https://github.com/${REPO_OWNER}/powerDown.git}"
+POWERDOWN_REPO="${POWERDOWN_REPO:-https://github.com/mcdonaldajr/powerDown.git}"
 POWERDOWN_REF="${POWERDOWN_REF:-main}"
 POWERDOWN_INSTALL_DIR="${POWERDOWN_INSTALL_DIR:-/home/pi/powerDown}"
 
@@ -47,7 +47,7 @@ usage() {
   cat <<EOF
 Usage: $SCRIPT_NAME [options]
 
-Installs the Watchkeeper suite onto a Raspberry Pi that already has Signal K
+Installs the AJRM Marine Suite onto a Raspberry Pi that already has Signal K
 Server installed and configured with signalk-server-setup.
 
 Options:
@@ -60,7 +60,7 @@ Options:
 
 Environment overrides:
   GITHUB_TOKEN                       GitHub token for private plugin repos
-  REPO_OWNER                         GitHub owner, default: mcdonaldajr
+  SUITE_REPO_OWNER                   GitHub owner, default: ajrm-marine-suite
   SIGNALK_HOME                       Signal K config directory, default: ~/.signalk
   LOG2RAM_REPO                       Default: $LOG2RAM_REPO
   LOG2RAM_REF                        Default: $LOG2RAM_REF
@@ -68,24 +68,24 @@ Environment overrides:
   POWERDOWN_REF                      Default: $POWERDOWN_REF
   POWERDOWN_INSTALL_DIR              Default: $POWERDOWN_INSTALL_DIR
   RESOURCES_PROVIDER_VERSION         Default: $RESOURCES_PROVIDER_VERSION
-  WATCHKEEPER_TRAFFIC_VERSION        Default: $WATCHKEEPER_TRAFFIC_VERSION
-  WATCHKEEPER_DISPLAY_VERSION        Default: $WATCHKEEPER_DISPLAY_VERSION
-  WATCHKEEPER_CONSOLE_VERSION        Default: $WATCHKEEPER_CONSOLE_VERSION
-  NOTIFICATIONS_PLUS_VERSION         Default: $NOTIFICATIONS_PLUS_VERSION
-  WATCHKEEPER_ALERTS_VERSION         Default: $WATCHKEEPER_ALERTS_VERSION
-  AIS_PLUS_AUDIO_VERSION             Default: $AIS_PLUS_AUDIO_VERSION
-  AUDIBLE_INSTRUMENTS_VERSION        Default: $AUDIBLE_INSTRUMENTS_VERSION
-  INSTRUMENTS_PLUS_VERSION           Default: $INSTRUMENTS_PLUS_VERSION
-  AI_SNAPSHOT_VERSION                Default: $AI_SNAPSHOT_VERSION
-  CAPTURE_PLUS_VERSION               Default: $CAPTURE_PLUS_VERSION
-  VOYAGE_CAPTURE_VERSION             Default: $VOYAGE_CAPTURE_VERSION
-  VOYAGE_VIEWER_VERSION              Default: $VOYAGE_VIEWER_VERSION
-  VESSEL_DATABASE_VERSION            Default: $VESSEL_DATABASE_VERSION
-  HARBOUR_EDITOR_VERSION             Default: $HARBOUR_EDITOR_VERSION
-  PI_CONTROLLER_VERSION              Default: $PI_CONTROLLER_VERSION
-  GPS_INTEGRITY_VERSION              Default: $GPS_INTEGRITY_VERSION
-  DR_PLOTTER_VERSION                 Default: $DR_PLOTTER_VERSION
-  WATCHKEEPER_SIMULATOR_VERSION      Default: $WATCHKEEPER_SIMULATOR_VERSION
+  AJRM_MARINE_TRAFFIC_VERSION        Default: $AJRM_MARINE_TRAFFIC_VERSION
+  AJRM_MARINE_DISPLAY_VERSION        Default: $AJRM_MARINE_DISPLAY_VERSION
+  AJRM_MARINE_CONSOLE_VERSION        Default: $AJRM_MARINE_CONSOLE_VERSION
+  AJRM_MARINE_NOTIFICATIONS_VERSION  Default: $AJRM_MARINE_NOTIFICATIONS_VERSION
+  AJRM_MARINE_ALERTS_VERSION         Default: $AJRM_MARINE_ALERTS_VERSION
+  AJRM_MARINE_AUDIO_VERSION          Default: $AJRM_MARINE_AUDIO_VERSION
+  AJRM_MARINE_INSTRUMENT_ALERTS_VERSION Default: $AJRM_MARINE_INSTRUMENT_ALERTS_VERSION
+  AJRM_MARINE_INSTRUMENTS_VERSION    Default: $AJRM_MARINE_INSTRUMENTS_VERSION
+  AJRM_MARINE_SNAPSHOT_VERSION       Default: $AJRM_MARINE_SNAPSHOT_VERSION
+  AJRM_MARINE_LOGGER_VERSION         Default: $AJRM_MARINE_LOGGER_VERSION
+  AJRM_MARINE_CAPTURE_VERSION        Default: $AJRM_MARINE_CAPTURE_VERSION
+  AJRM_MARINE_VOYAGE_VIEWER_VERSION  Default: $AJRM_MARINE_VOYAGE_VIEWER_VERSION
+  AJRM_MARINE_VESSEL_DATABASE_VERSION Default: $AJRM_MARINE_VESSEL_DATABASE_VERSION
+  AJRM_MARINE_HARBOUR_EDITOR_VERSION Default: $AJRM_MARINE_HARBOUR_EDITOR_VERSION
+  AJRM_MARINE_PI_CONTROLLER_VERSION  Default: $AJRM_MARINE_PI_CONTROLLER_VERSION
+  AJRM_MARINE_GPS_INTEGRITY_VERSION  Default: $AJRM_MARINE_GPS_INTEGRITY_VERSION
+  AJRM_MARINE_DR_PLOTTER_VERSION     Default: $AJRM_MARINE_DR_PLOTTER_VERSION
+  AJRM_MARINE_SIMULATOR_VERSION      Default: $AJRM_MARINE_SIMULATOR_VERSION
 EOF
 }
 
@@ -280,7 +280,7 @@ install_powerdown() {
 install_plugin() {
   local repo="$1"
   local version="$2"
-  local url="git+https://github.com/${REPO_OWNER}/${repo}.git#${version}"
+  local url="git+https://github.com/${SUITE_REPO_OWNER}/${repo}.git#${version}"
 
   log "Installing ${repo} ${version}"
   npm install "$url" --omit=dev --no-package-lock || {
@@ -312,24 +312,24 @@ log "Installing Signal K plugins into $SIGNALK_HOME"
 cd "$SIGNALK_HOME"
 
 install_npm_package "@signalk/resources-provider" "$RESOURCES_PROVIDER_VERSION"
-install_plugin "signalk-notifications-plus" "$NOTIFICATIONS_PLUS_VERSION"
-install_plugin "signalk-watchkeeper-alerts" "$WATCHKEEPER_ALERTS_VERSION"
-install_plugin "signalk-ais-plus-engine" "$WATCHKEEPER_TRAFFIC_VERSION"
-install_plugin "signalk-ais-plus-display" "$WATCHKEEPER_DISPLAY_VERSION"
-install_plugin "signalk-ais-plus-console" "$WATCHKEEPER_CONSOLE_VERSION"
-install_plugin "signalk-audible-instruments" "$AUDIBLE_INSTRUMENTS_VERSION"
-install_plugin "signalk-instruments-plus" "$INSTRUMENTS_PLUS_VERSION"
-install_plugin "signalk-ais-plus-audio" "$AIS_PLUS_AUDIO_VERSION"
-install_plugin "signalk-ai-snapshot" "$AI_SNAPSHOT_VERSION"
-install_plugin "signalk-capture-plus" "$CAPTURE_PLUS_VERSION"
-install_plugin "signalk-voyage-debugger" "$VOYAGE_CAPTURE_VERSION"
-install_plugin "signalk-voyage-viewer" "$VOYAGE_VIEWER_VERSION"
-install_plugin "signalk-vessel-database" "$VESSEL_DATABASE_VERSION"
-install_plugin "signalk-harbour-editor" "$HARBOUR_EDITOR_VERSION"
-install_plugin "signalk-pi-controller" "$PI_CONTROLLER_VERSION"
-install_plugin "signalk-gps-integrity" "$GPS_INTEGRITY_VERSION"
-install_plugin "signalk-dr-plotter" "$DR_PLOTTER_VERSION"
-install_plugin "signalk-watchkeeper-simulator" "$WATCHKEEPER_SIMULATOR_VERSION"
+install_plugin "signalk-ajrm-marine-notifications" "$AJRM_MARINE_NOTIFICATIONS_VERSION"
+install_plugin "signalk-ajrm-marine-alerts" "$AJRM_MARINE_ALERTS_VERSION"
+install_plugin "signalk-ajrm-marine-traffic" "$AJRM_MARINE_TRAFFIC_VERSION"
+install_plugin "signalk-ajrm-marine-display" "$AJRM_MARINE_DISPLAY_VERSION"
+install_plugin "signalk-ajrm-marine-console" "$AJRM_MARINE_CONSOLE_VERSION"
+install_plugin "signalk-ajrm-marine-instrument-alerts" "$AJRM_MARINE_INSTRUMENT_ALERTS_VERSION"
+install_plugin "signalk-ajrm-marine-instruments" "$AJRM_MARINE_INSTRUMENTS_VERSION"
+install_plugin "signalk-ajrm-marine-audio" "$AJRM_MARINE_AUDIO_VERSION"
+install_plugin "signalk-ajrm-marine-snapshot" "$AJRM_MARINE_SNAPSHOT_VERSION"
+install_plugin "signalk-ajrm-marine-logger" "$AJRM_MARINE_LOGGER_VERSION"
+install_plugin "signalk-ajrm-marine-capture" "$AJRM_MARINE_CAPTURE_VERSION"
+install_plugin "signalk-ajrm-marine-voyage-viewer" "$AJRM_MARINE_VOYAGE_VIEWER_VERSION"
+install_plugin "signalk-ajrm-marine-vessel-database" "$AJRM_MARINE_VESSEL_DATABASE_VERSION"
+install_plugin "signalk-ajrm-marine-harbour-editor" "$AJRM_MARINE_HARBOUR_EDITOR_VERSION"
+install_plugin "signalk-ajrm-marine-pi-controller" "$AJRM_MARINE_PI_CONTROLLER_VERSION"
+install_plugin "signalk-ajrm-marine-gps-integrity" "$AJRM_MARINE_GPS_INTEGRITY_VERSION"
+install_plugin "signalk-ajrm-marine-dr-plotter" "$AJRM_MARINE_DR_PLOTTER_VERSION"
+install_plugin "signalk-ajrm-marine-simulator" "$AJRM_MARINE_SIMULATOR_VERSION"
 
 mkdir -p \
   "$HOME/CapturePlusLogs/buffer" \
@@ -349,9 +349,9 @@ Next steps:
 1. Open the Signal K Admin UI.
 2. Log in as admin.
 3. Enable/configure the installed plugins if they are not already enabled.
-4. Enable Watchkeeper Traffic when you are ready for it to publish AIS collision notifications.
-5. Open Watchkeeper Console at:
-   https://<your-pi-hostname>:3443/signalk-ais-plus-console/
+4. Enable AJRM Marine Traffic when you are ready for it to publish AIS collision notifications.
+5. Open AJRM Marine Console at:
+   https://<your-pi-hostname>:3443/signalk-ajrm-marine-console/
 
 If browser behaviour looks stale after an update, hard refresh or clear site
 data for the Signal K hostname.

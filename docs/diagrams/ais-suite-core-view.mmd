@@ -1,17 +1,17 @@
 flowchart LR
   SignalK[("Signal K Server\nData API + plugin routes")]
 
-  AIS["Watchkeeper Traffic\nalert brain"]
+  AIS["AJRM Marine Traffic\nalert brain"]
   DB["Vessel Database\nlearns static MMSI details"]
-  Audio["Watchkeeper Audio\nPiper + directional pings + stream"]
-  Display["Watchkeeper Display\nchart display"]
-  Console["Watchkeeper Console\ncontrols + status"]
-  Alerts["Watchkeeper Alerts\ncrew alert viewer"]
+  Audio["AJRM Marine Audio\nPiper + directional pings + stream"]
+  Display["AJRM Marine Display\nchart display"]
+  Console["AJRM Marine Console\ncontrols + status"]
+  Alerts["AJRM Marine Alerts\ncrew alert viewer"]
   Snapshot["AI Snapshot\ncompact support JSON"]
   Harbour["Harbour Editor\nedits Harbour:* regions"]
   Harbours[("signalk-harbours\ngit repo")]
   Capture["CapturePlus\ncapture / replay"]
-  Sim["Watchkeeper Simulator\nown-vessel, targets,\nGPS and environment"]
+  Sim["AJRM Marine Simulator\nown-vessel, targets,\nGPS and environment"]
 
   Sim --> SignalK
   Capture <--> SignalK

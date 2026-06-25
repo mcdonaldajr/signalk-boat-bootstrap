@@ -2,7 +2,7 @@
 set -Eeuo pipefail
 
 SCRIPT_NAME="$(basename "$0")"
-REPO_OWNER="${REPO_OWNER:-mcdonaldajr}"
+SUITE_REPO_OWNER="${SUITE_REPO_OWNER:-${REPO_OWNER:-ajrm-marine-suite}}"
 SIGNALK_HOME="${SIGNALK_HOME:-$HOME/.signalk}"
 RESTART_SIGNALK="${RESTART_SIGNALK:-1}"
 INSTALL_REF_MODE="${INSTALL_REF_MODE:-tag}"
@@ -10,31 +10,31 @@ NETRC_CREATED=0
 NETRC_BACKUP=""
 
 PLUGINS=(
-  signalk-notifications-plus
-  signalk-watchkeeper-alerts
-  signalk-ais-plus-engine
-  signalk-ais-plus-display
-  signalk-ais-plus-console
-  signalk-audible-instruments
-  signalk-instruments-plus
-  signalk-ais-plus-audio
-  signalk-ai-snapshot
-  signalk-capture-plus
-  signalk-voyage-debugger
-  signalk-voyage-viewer
-  signalk-vessel-database
-  signalk-harbour-editor
-  signalk-pi-controller
-  signalk-gps-integrity
-  signalk-dr-plotter
-  signalk-watchkeeper-simulator
+  signalk-ajrm-marine-notifications
+  signalk-ajrm-marine-alerts
+  signalk-ajrm-marine-traffic
+  signalk-ajrm-marine-display
+  signalk-ajrm-marine-console
+  signalk-ajrm-marine-instrument-alerts
+  signalk-ajrm-marine-instruments
+  signalk-ajrm-marine-audio
+  signalk-ajrm-marine-snapshot
+  signalk-ajrm-marine-logger
+  signalk-ajrm-marine-capture
+  signalk-ajrm-marine-voyage-viewer
+  signalk-ajrm-marine-vessel-database
+  signalk-ajrm-marine-harbour-editor
+  signalk-ajrm-marine-pi-controller
+  signalk-ajrm-marine-gps-integrity
+  signalk-ajrm-marine-dr-plotter
+  signalk-ajrm-marine-simulator
 )
 
 usage() {
   cat <<EOF
 Usage: $SCRIPT_NAME [options]
 
-Updates the Watchkeeper suite in ~/.signalk from GitHub.
+Updates the AJRM Marine Suite in ~/.signalk from GitHub.
 By default it installs the newest v* semver tag for each plugin repository.
 
 Options:
@@ -43,7 +43,7 @@ Options:
   --help          Show this help
 
 Environment overrides:
-  REPO_OWNER      GitHub owner, default: mcdonaldajr
+  SUITE_REPO_OWNER GitHub owner, default: ajrm-marine-suite
   SIGNALK_HOME    Signal K config directory, default: ~/.signalk
   GITHUB_TOKEN    Optional GitHub token for private repositories
 EOF
@@ -145,7 +145,7 @@ EOF
 
 latest_tag_for_repo() {
   local repo="$1"
-  local url="https://github.com/${REPO_OWNER}/${repo}.git"
+  local url="https://github.com/${SUITE_REPO_OWNER}/${repo}.git"
   git ls-remote --tags --refs "$url" 'v*' \
     | awk -F/ '{ print $3 }' \
     | sort -V \
@@ -162,7 +162,7 @@ install_plugin() {
     [[ -n "$ref" ]] || die "Could not find a v* tag for ${repo}. Use --main to install from main."
   fi
 
-  local url="git+https://github.com/${REPO_OWNER}/${repo}.git#${ref}"
+  local url="git+https://github.com/${SUITE_REPO_OWNER}/${repo}.git#${ref}"
   log "Installing ${repo} ${ref}"
   npm install "$url" --omit=dev --no-package-lock || {
     warn "Install failed for ${repo}; verifying npm cache and retrying once."
@@ -182,7 +182,7 @@ install_npm_package_latest() {
   }
 }
 
-log "Updating Watchkeeper suite in $SIGNALK_HOME"
+log "Updating AJRM Marine Suite in $SIGNALK_HOME"
 setup_github_auth
 cd "$SIGNALK_HOME"
 
@@ -201,4 +201,4 @@ if [[ "$RESTART_SIGNALK" == "1" ]]; then
   fi
 fi
 
-log "Watchkeeper suite update complete"
+log "AJRM Marine Suite update complete"
